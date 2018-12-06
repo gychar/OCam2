@@ -1,0 +1,7 @@
+/data/*
+/maskset/*
+/png/*
+/statistics/*
+/test_img/*
+*.zip
+*.png
