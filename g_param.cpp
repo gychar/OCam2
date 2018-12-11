@@ -22,7 +22,9 @@ short **g_image_cycle = new short*[g_nb_cycle];
 short g_image_cycle_sum[OCAM2_PIXELS_IMAGE_NORMAL] = {0};
 unsigned char **g_surfacebuffer;
 unsigned int g_buffersize;
-
+vector<short> g_register_zoom_8bits(g_mask_pixel,0);
+vector<short> g_register_zoom_vector(g_mask_pixel,0);;
+vector<short> g_imgNormal_vector(OCAM2_PIXELS_IMAGE_NORMAL,0);
 
 // QT CLASS
 QImage *g_image;
@@ -89,14 +91,13 @@ vector<float> g_PTC_Sigma2Shot(g_statistics_try,0);;
 vector<float> g_PTC_Sigma2Read(g_statistics_try,0);;
 int g_MaskSetFrames = 0;
 int g_callback_mode = 0;
-QString g_temp_value[9] = {""};
+QString g_temp_value[10] = {""};
 int g_gain_value = 0;
 int g_n_t = 101;
 int g_t_length = 10;
 vector<vector <double>> g_mean_histo_register(8, vector<double>(g_n_t,0));
 int test = 0;
 int g_zoom_id_register = 0;
-vector<short> g_register_zoom(g_mask_pixel,0);
 unsigned int g_zoom_x = 0;
 unsigned int g_zoom_y = 0;
 

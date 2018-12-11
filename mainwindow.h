@@ -166,6 +166,8 @@ private slots:
 
     void on_Flat_Checkbox_stateChanged(int arg1);
 
+    void on_Load_Bias_PB_clicked();
+
 private:
     Ui::MainWindow *ui;
 

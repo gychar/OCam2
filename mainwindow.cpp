@@ -462,7 +462,10 @@ void MainWindow::AcquireImages()
             //            g_imageNormal[i] = (double(g_imageNormal[i]) / double(g_imageNormalFlat[i]))*1000;
         }
     }
-
+    // Copy to vector
+    for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
+        g_imgNormal_vector[i] = g_imageNormal[i];
+    }
     // Add Gaussian Noise
     if(g_addGaussianNoise_state){
         float mu = 29, sigma = 0.1;
@@ -609,32 +612,61 @@ void MainWindow::UpdateTemp(){
     //        qDebug() << str;
     QString component;
     int i = 0, j = 0, length = 0;
-    for(int k = 0; k < 9; k++){
-        component = "[";
-        i = str.indexOf(component,j);
-        component = "]";
-        j = str.indexOf(component,i);
-        if(j < i)
-            j = i;
-        length = j - i;
-        if(length == 1)
-            length++;
-        component = str.mid(i+1,length-1);
-        if((component.at(0) != 'T') && (component.at(0) != '<')){
-            g_temp_value[k] = str.mid(i+1,length-1);
+    if(str.at(0) == 'T'){
+        for(int k = 0; k < 9; k++){
+            component = "[";
+            i = str.indexOf(component,j);
+            component = "]";
+            j = str.indexOf(component,i);
+            if(j < i)
+                j = i;
+            length = j - i;
+            if(length == 1)
+                length++;
+            component = str.mid(i+1,length-1);
+            if((component.at(0) != 'T') && (component.at(0) != '<')){
+                g_temp_value[k] = str.mid(i+1,length-1);
+            }
         }
+        ui->Temp_CCD_Value->setText(g_temp_value[0] + "°C");
+        ui->Temp_CPU_Value->setText(g_temp_value[1] + "°C");
+        ui->Temp_POWER_Value->setText(g_temp_value[2] + "°C");
+        ui->Temp_BIAS_Value->setText(g_temp_value[3] + "°C");
+        ui->Temp_WATER_Value->setText(g_temp_value[4] + "°C");
+        ui->Temp_LEFT_Value->setText(g_temp_value[5] + "°C");
+        ui->Temp_RIGHT_Value->setText(g_temp_value[6] + "°C");
+        g_temp_value[7] = QString::number(g_temp_value[7].toDouble()/10);
+        ui->Temp_SET_Value->setText(g_temp_value[7] + "°C");
+        g_temp_value[8] = QString::number(g_temp_value[8].toDouble()/1000);
+        ui->Temp_CoolingPower_Value->setText(g_temp_value[8] + "W");
+    }else if(str.at(0) == '<'){
+        for(int k = 0; k < 10; k++){
+            component = "[";
+            i = str.indexOf(component,j);
+            component = "]";
+            j = str.indexOf(component,i);
+            if(j < i)
+                j = i;
+            length = j - i;
+            if(length == 1)
+                length++;
+            component = str.mid(i+1,length-1);
+            if(component.at(0) != '<'){
+                g_temp_value[k] = str.mid(i+1,length-1);
+            }
+        }
+        ui->Temp_CCD_Value->setText(g_temp_value[0] + "°C");
+        ui->Temp_CPU_Value->setText(g_temp_value[1] + "°C");
+        ui->Temp_POWER_Value->setText(g_temp_value[2] + "°C");
+        ui->Temp_BIAS_Value->setText(g_temp_value[3] + "°C");
+        ui->Temp_WATER_Value->setText(g_temp_value[4] + "°C");
+        ui->Temp_LEFT_Value->setText(g_temp_value[5] + "°C");
+        ui->Temp_RIGHT_Value->setText(g_temp_value[6] + "°C");
+        g_temp_value[7] = QString::number(g_temp_value[7].toDouble()/10);
+        ui->Temp_SET_Value->setText(g_temp_value[7] + "°C");
+        g_temp_value[9] = QString::number(g_temp_value[9].toDouble()/1000);
+        ui->Temp_CoolingPower_Value->setText(g_temp_value[9] + "W");
     }
-    ui->Temp_CCD_Value->setText(g_temp_value[0] + "°C");
-    ui->Temp_CPU_Value->setText(g_temp_value[1] + "°C");
-    ui->Temp_POWER_Value->setText(g_temp_value[2] + "°C");
-    ui->Temp_BIAS_Value->setText(g_temp_value[3] + "°C");
-    ui->Temp_WATER_Value->setText(g_temp_value[4] + "°C");
-    ui->Temp_LEFT_Value->setText(g_temp_value[5] + "°C");
-    ui->Temp_RIGHT_Value->setText(g_temp_value[6] + "°C");
-    g_temp_value[7] = QString::number(g_temp_value[7].toDouble()/10);
-    ui->Temp_SET_Value->setText(g_temp_value[7] + "°C");
-    g_temp_value[8] = QString::number(g_temp_value[8].toDouble()/1000);
-    ui->Temp_CoolingPower_Value->setText(g_temp_value[8] + "W");
 }
 
 // Zoom image
@@ -649,7 +681,8 @@ void MainWindow::ZoomImage(){
         offset_y = g_mask_y * (int(g_zoom_id_register / (g_imgsize / g_mask_x)));
         for(int y = 0; y < g_mask_y; y++){
             for(int x = 0; x < g_mask_x; x++){
-                g_register_zoom[y*g_mask_x+x] = g_imageNormal8bits[(offset_y * g_imgsize + offset_x) + x];
+                g_register_zoom_8bits[y*g_mask_x+x] = g_imageNormal8bits[(offset_y * g_imgsize + offset_x) + x];
+                g_register_zoom_vector[y*g_mask_x+x] = g_imageNormal[(offset_y * g_imgsize + offset_x) + x];
                 i++;
             }
             offset_y++;
@@ -658,7 +691,7 @@ void MainWindow::ZoomImage(){
         for (int pos=0,i=0; i < g_mask_pixel; pos+=3,i++)
         {
             unsigned char PixVal = 0;
-            short RawPixel= g_register_zoom[i];
+            short RawPixel= g_register_zoom_8bits[i];
             if (RawPixel >= 0xFF) //if pixel is above White point
                 PixVal = 0xFF;//8 bit value is 255
             else if (RawPixel <= 0)//if below Black
@@ -1205,6 +1238,67 @@ void MainWindow::on_LoadDark_PB_clicked()
     cout << dec << "5σ = " << 5*sqrt(g_Sigma2Read) << endl;
 }
 
+// Load Bias Button
+void MainWindow::on_Load_Bias_PB_clicked()
+{
+    QString str = QString::number(ui->Gain_SpinBox->value());
+    // Load Flat
+    QString fileName = g_data_path+"flat/flat_" + str + ".dat";
+    QFile file_flat(fileName);
+    if(!file_flat.open(QIODevice::ReadOnly)){
+        QMessageBox::warning(this,"Warning","Can not open.",QMessageBox::Yes);
+    }else{
+        QDataStream in(&file_flat);
+        // Read and check the header
+        qint16 magic;
+        in >> magic;
+        if(magic != 0xff)
+            QMessageBox::warning(this,"Warning","Bad file format", QMessageBox::Ok);
+        else{
+            in.setVersion(QDataStream::Qt_5_11);
+            qint16 data;
+            in >> data;
+            g_gain_value = data;
+            ui->Gain_Label->setText("Gain = " + QString::number(g_gain_value));
+            for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL;i++){
+                in >> data;
+                g_imageNormalFlat[i] = data;
+            }
+        }
+    }
+    file_flat.close();
+    cout << "Flat image loaded." << endl;
+    // Load Dark
+    fileName = g_data_path+"dark/dark_" + str + ".dat";
+    QFile file_dark(fileName);
+    if(!file_dark.open(QIODevice::ReadOnly)){
+        QMessageBox::warning(this,"Warning","Can not open.",QMessageBox::Yes);
+    }else{
+        QDataStream in(&file_dark);
+        // Read and check the header
+        qint16 magic;
+        in >> magic;
+        if(magic != 0xff)
+            QMessageBox::warning(this,"Warning","Bad file format", QMessageBox::Ok);
+        else{
+            in.setVersion(QDataStream::Qt_5_11);
+            qint16 data;
+            in >> data;
+            g_gain_value = data;
+            ui->Gain_Label->setText("Gain = " + QString::number(g_gain_value));
+            for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL;i++){
+                in >> data;
+                g_imageNormalDark[i] = data;
+            }
+            qreal sigma;
+            in >> sigma;
+            g_Sigma2Read = sigma;
+        }
+    }
+    file_dark.close();
+    cout << "Dark image loaded." << endl;
+}
+
 // Snap Shot Button
 void MainWindow::on_Snap_shot_PB_clicked()
 {
@@ -1282,6 +1376,10 @@ void MainWindow::on_Gain_Histo_PB_clicked()
         for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
             g_imageNormal[i] = g_imageNormal[i] & 0x3fff;
             image[k][i] = g_imageNormal[i];
+            // Flat image suppression
+            image[k][i] = ((image[k][i] - g_imageNormalFlat[i]) < 0) ? 0 : (image[k][i] - g_imageNormalFlat[i]);
+            // Dark image suppression
+            image[k][i] = ((image[k][i] - g_imageNormalDark[i]) < 0) ? 0 : (image[k][i] - g_imageNormalDark[i]);
         }
     }
     cout << "Grab frames ok" << endl;
@@ -2333,7 +2431,7 @@ void MainWindow::on_Statistics_PB_clicked()
     ui->Variance_Label->setText("Variance: " + QString::number(static_cast<double>(g_variance)));
     ui->StandardDeviation_Label->setText("Ecart-type: " + QString::number(static_cast<double>(g_SD)));
     ui->SNR_Label->setText("SNR: " + QString::number(static_cast<double>(g_SNR)));
-//    ui->Statistics_PB->setEnabled(false);
+    //    ui->Statistics_PB->setEnabled(false);
 
     // Register statistics
     int nb_register = OCAM2_PIXELS_IMAGE_NORMAL/(g_mask_pixel);
@@ -2417,6 +2515,7 @@ void MainWindow::on_PNG_PB_clicked()
 void MainWindow::on_Temp_PB_clicked()
 {
     SerialCommand("temp",0);
+    UpdateTemp();
 }
 
 // Reset overillumination protection
@@ -3263,6 +3362,7 @@ int get_y(int in){
 }
 
 /*================= OTHER FUNCTION END ======================================*/
+
 
 
 

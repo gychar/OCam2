@@ -182,22 +182,64 @@
      <rect>
       <x>420</x>
       <y>10</y>
-      <width>361</width>
-      <height>101</height>
+      <width>364</width>
+      <height>121</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="Dark_Layout">
-     <item row="2" column="2">
+     <item row="1" column="0">
+      <widget class="QPushButton" name="Flat_PB">
+       <property name="text">
+        <string>Flat</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="Dark_Max_Label">
+       <property name="text">
+        <string>Max: </string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="LoadDark_PB">
+       <property name="text">
+        <string>Load Dark</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="3">
+      <widget class="QProgressBar" name="Dark_progressBar">
+       <property name="value">
+        <number>0</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QLabel" name="Dark_Min_Label">
+       <property name="text">
+        <string>Min: </string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QPushButton" name="Load_Bias_PB">
+       <property name="text">
+        <string>Load</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
       <widget class="QCheckBox" name="Flat_Checkbox">
        <property name="text">
         <string>Flat</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QLabel" name="Dark_Max_Label">
+     <item row="1" column="1">
+      <widget class="QPushButton" name="LoadFlat_PB">
        <property name="text">
-        <string>Max: </string>
+        <string>Load Flat</string>
        </property>
       </widget>
      </item>
@@ -208,59 +250,24 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
+     <item row="0" column="2">
       <widget class="QCheckBox" name="Dark_Checkbox">
        <property name="text">
         <string>Dark</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="Darkimage_PB">
-       <property name="text">
-        <string>Dark Image</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QProgressBar" name="Dark_progressBar">
-       <property name="value">
-        <number>0</number>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
+     <item row="2" column="1">
       <widget class="QLabel" name="Gain_Label">
        <property name="text">
         <string>Gain = </string>
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="Dark_Min_Label">
-       <property name="text">
-        <string>Min: </string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="LoadFlat_PB">
-       <property name="text">
-        <string>Load Flat</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="Flat_PB">
-       <property name="text">
-        <string>Flat</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="LoadDark_PB">
-       <property name="text">
-        <string>Load Dark</string>
+     <item row="2" column="2">
+      <widget class="QSpinBox" name="Gain_SpinBox">
+       <property name="maximum">
+        <number>1000</number>
        </property>
       </widget>
      </item>
@@ -668,7 +675,7 @@
         <number>80</number>
        </attribute>
        <attribute name="verticalHeaderDefaultSectionSize">
-        <number>20</number>
+        <number>21</number>
        </attribute>
        <row/>
        <row/>
@@ -1096,6 +1103,19 @@
     </property>
     <property name="maximum">
      <number>8</number>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Darkimage_PB">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>270</y>
+      <width>86</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Dark Image</string>
     </property>
    </widget>
   </widget>

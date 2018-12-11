@@ -35,7 +35,8 @@ SOURCES += \
     qcustomplot.cpp \
     dialog_stats.cpp \
     zoomer.cpp \
-    qgraphicsviewcustom.cpp
+    qgraphicsviewcustom.cpp \
+    qgraphicsitemcustom.cpp
 
 HEADERS += \
     ocam2_sdk.h \
@@ -49,7 +50,8 @@ HEADERS += \
     qcustomplot.h \
     dialog_stats.h \
     zoomer.h \
-    qgraphicsviewcustom.h
+    qgraphicsviewcustom.h \
+    qgraphicsitemcustom.h
 
 FORMS += \
     mainwindow.ui \

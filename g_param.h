@@ -32,6 +32,9 @@ extern short **g_image_cycle;
 extern short g_image_cycle_sum[OCAM2_PIXELS_IMAGE_NORMAL];
 extern unsigned char **g_surfacebuffer;
 extern unsigned int g_buffersize;
+extern vector<short> g_register_zoom_8bits;
+extern vector<short> g_register_zoom_vector;
+extern vector<short> g_imgNormal_vector;
 
 // QT CLASS
 extern QImage *g_image;
@@ -99,14 +102,13 @@ extern vector<float> g_PTC_Sigma2Shot;
 extern vector<float> g_PTC_Sigma2Read;
 extern int g_MaskSetFrames;
 extern int g_callback_mode;
-extern QString g_temp_value[9];
+extern QString g_temp_value[10];
 extern int g_gain_value;
 extern int g_n_t;
 extern int g_t_length;
 extern vector<vector <double>> g_mean_histo_register;
 extern int test;
 extern int g_zoom_id_register;
-extern vector<short> g_register_zoom;
 extern unsigned int g_zoom_x;
 extern unsigned int g_zoom_y;
 

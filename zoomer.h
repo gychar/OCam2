@@ -32,7 +32,7 @@ private slots:
 private:
     Ui::Zoomer *ui;
     void display();
-    void mousePressEvent(QMouseEvent *event);
+//    void mousePressEvent(QMouseEvent *event);
 };
 
 #endif // ZOOMER_H

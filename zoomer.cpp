@@ -27,13 +27,13 @@ void Zoomer::display(){
     ui->graphicsView->show();
 }
 
-void Zoomer::mousePressEvent(QMouseEvent *event)
-{
-    int rectx = ui->graphicsView->pos().x()+1;
-    int recty = ui->graphicsView->pos().y()+1;
-    int x = event->windowPos().x();
-    int y = event->windowPos().y();
-}
+//void Zoomer::mousePressEvent(QMouseEvent *event)
+//{
+//    int rectx = ui->graphicsView->pos().x()+1;
+//    int recty = ui->graphicsView->pos().y()+1;
+//    int x = event->windowPos().x();
+//    int y = event->windowPos().y();
+//}
 
 void Zoomer::on_checkBox_toggled(bool checked)
 {
@@ -69,6 +69,8 @@ bool Zoomer::eventFilter(QObject *obj, QEvent *event)
             v = g_imageNormal[g_zoom_x+offsetx*g_mask_x+(g_zoom_y+offsety*g_mask_y)*g_imgsize];
         }
         ui->pixel_label->setText(QString::number(v));
+    }
+    if (event->type() == QEvent::MouseButtonPress){
     }
 
     return false;
