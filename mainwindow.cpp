@@ -1897,7 +1897,6 @@ void MainWindow::on_BufferLoad_PB_clicked()
 //                        g_BigImageBuffer[j][i] = val;
                         in >> g_BigImageBuffer[j][i];
                     }
-                    pixel_correction(g_BigImageBuffer[j],g_BigImageBuffer[j]);
                     ui->progressBar->setValue(j);
                     ui->ImageName_Label->setText(QString::number(j+1) + " / " +QString::number(loadframes));
                 }
@@ -1905,6 +1904,7 @@ void MainWindow::on_BufferLoad_PB_clicked()
         }
         file.close();
     }
+    g_load_correction = false;
     qDebug() << fileName << "loaded";
     qDebug() << "Time used: " << g_qtimeObj->elapsed()/1000.0 << "s";
     ChangeSection();
@@ -1916,11 +1916,14 @@ void MainWindow::on_BufferDisplay_PB_clicked()
     g_qtimeObj->start();
     ui->progressBar->setMaximum(g_BigImageBufferIndex);
     for(int i = 0; i < g_BigImageBufferIndex;i++){
+        if(!g_load_correction)
+            pixel_correction(g_BigImageBuffer[i],g_BigImageBuffer[i]);
         display(g_BigImageBuffer[i]);
         ui->progressBar->setValue(i+1);
         ui->ImageName_Label->setText(QString::number(i+1) + " / " +QString::number(g_BigImageBufferIndex));
         QTest::qWait(0);
     }
+    g_load_correction = true;
     qDebug() << "Time used: " << g_qtimeObj->elapsed()/1000.0 << "s";
     ChangeSection();
 }
