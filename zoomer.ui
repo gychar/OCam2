@@ -105,6 +105,22 @@
     <string>Full Image</string>
    </property>
   </widget>
+  <widget class="QLabel" name="mean_label">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>20</y>
+     <width>107</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>mean: </string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>

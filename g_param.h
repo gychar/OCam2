@@ -111,6 +111,7 @@ extern int test;
 extern int g_zoom_id_register;
 extern unsigned int g_zoom_x;
 extern unsigned int g_zoom_y;
+extern double g_zoom_mean;
 
 // NOISE
 extern float g_Sigma2Read;

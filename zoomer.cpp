@@ -71,6 +71,7 @@ bool Zoomer::eventFilter(QObject *obj, QEvent *event)
         ui->pixel_label->setText(QString::number(v));
     }
     if (event->type() == QEvent::MouseButtonPress){
+        ui->mean_label->setText("mean: "+QString::number(g_zoom_mean));
     }
 
     return false;

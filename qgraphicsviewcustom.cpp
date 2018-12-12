@@ -52,6 +52,6 @@ void QGraphicsViewCustom::mouseReleaseEvent(QMouseEvent *event)
     y2 = unsigned(event->y());
     item = new QGraphicsItemCustom(x1,y1,x2,y2);
     this->scene()->addItem(item);
-    double mean = GetMean(g_zoom_full? g_imgNormal_vector : g_register_zoom_vector, x1/4,y1/4,x2/4,y2/4);
+    g_zoom_mean = GetMean(g_zoom_full? g_imgNormal_vector : g_register_zoom_vector, x1/4,y1/4,x2/4,y2/4);
     cout << dec << "release : x = " << x2/4 << " y = " << y2/4 << endl;
 }

@@ -100,6 +100,8 @@ int test = 0;
 int g_zoom_id_register = 0;
 unsigned int g_zoom_x = 0;
 unsigned int g_zoom_y = 0;
+double g_zoom_mean = 0.0;
+
 
 // NOISE
 float g_Sigma2Read = 0;
