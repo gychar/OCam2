@@ -60,6 +60,7 @@ bool g_statistics_global_state = false;
 bool g_addGaussianNoise_state = false;
 bool g_surface_end = false;
 bool g_zoom_full = false;
+bool g_zoom_mean_done = false;
 
 
 // PARAMETERS

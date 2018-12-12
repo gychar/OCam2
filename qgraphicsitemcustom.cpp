@@ -20,6 +20,8 @@ QRectF QGraphicsItemCustom::boundingRect() const
 
 void QGraphicsItemCustom::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option)
+    Q_UNUSED(widget)
     painter->setPen(QPen(Qt::red, 2));
 //    painter->setPen(QColor::fromRgb(QRandomGenerator::global()->generate()));
     if(!g_zoom_full && x1 < 240 && y1 < 480 && x2 < 240 && y2 < 480){

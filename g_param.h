@@ -70,6 +70,7 @@ extern bool g_statistics_global_state;
 extern bool g_addGaussianNoise_state;
 extern bool g_surface_end;
 extern bool g_zoom_full;
+extern bool g_zoom_mean_done;
 
 
 // PARAMETERS

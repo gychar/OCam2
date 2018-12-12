@@ -8,6 +8,7 @@
 #include <QMouseEvent>
 #include <QCursor>
 #include <iostream>
+#include <unistd.h>
 #include "qgraphicsviewcustom.h"
 
 using namespace std;

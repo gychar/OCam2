@@ -3,8 +3,7 @@
 
 QGraphicsItemCustom* QGraphicsViewCustom::item =  new QGraphicsItemCustom(0,0,0,0);
 
-QGraphicsViewCustom::QGraphicsViewCustom(QWidget *parent) : QGraphicsView (parent)
-{
+QGraphicsViewCustom::QGraphicsViewCustom(QWidget *parent) : QGraphicsView (parent){
     setMouseTracking(true);
 }
 
@@ -25,6 +24,8 @@ double QGraphicsViewCustom::GetMean(vector<short> img, unsigned int a, unsigned 
         }
     }
     double ret = double(sum)/double(size);
+    g_zoom_mean = ret;
+    g_zoom_mean_done = true;
     cout << "mean = " << ret << endl;
     return ret;
 }
@@ -43,6 +44,7 @@ void QGraphicsViewCustom::mousePressEvent(QMouseEvent *event)
     this->scene()->update();
     x1 = unsigned(event->x());
     y1 = unsigned(event->y());
+    g_zoom_mean_done = false;
     cout << dec << "press : x = " << x1/4 << " y = " << y1/4 << endl;
 }
 
@@ -52,6 +54,6 @@ void QGraphicsViewCustom::mouseReleaseEvent(QMouseEvent *event)
     y2 = unsigned(event->y());
     item = new QGraphicsItemCustom(x1,y1,x2,y2);
     this->scene()->addItem(item);
-    g_zoom_mean = GetMean(g_zoom_full? g_imgNormal_vector : g_register_zoom_vector, x1/4,y1/4,x2/4,y2/4);
+    GetMean(g_zoom_full? g_imgNormal_vector : g_register_zoom_vector, x1/4,y1/4,x2/4,y2/4);
     cout << dec << "release : x = " << x2/4 << " y = " << y2/4 << endl;
 }
