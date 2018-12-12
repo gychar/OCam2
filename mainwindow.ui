@@ -209,7 +209,7 @@
       </widget>
      </item>
      <item row="2" column="3">
-      <widget class="QProgressBar" name="Dark_progressBar">
+      <widget class="QProgressBar" name="op_progressBar">
        <property name="value">
         <number>0</number>
        </property>
@@ -651,8 +651,8 @@
      <rect>
       <x>990</x>
       <y>210</y>
-      <width>261</width>
-      <height>211</height>
+      <width>257</width>
+      <height>216</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="StatsTable_Layout">

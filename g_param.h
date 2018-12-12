@@ -31,6 +31,7 @@ extern short **g_BigImageBuffer;
 extern short **g_image_cycle;
 extern short g_image_cycle_sum[OCAM2_PIXELS_IMAGE_NORMAL];
 extern unsigned char **g_surfacebuffer;
+extern short **g_surfacebuffer_short;
 extern unsigned int g_buffersize;
 extern vector<short> g_register_zoom_8bits;
 extern vector<short> g_register_zoom_vector;

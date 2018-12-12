@@ -21,6 +21,7 @@ short **g_BigImageBuffer;
 short **g_image_cycle = new short*[g_nb_cycle];
 short g_image_cycle_sum[OCAM2_PIXELS_IMAGE_NORMAL] = {0};
 unsigned char **g_surfacebuffer;
+short **g_surfacebuffer_short;
 unsigned int g_buffersize;
 vector<short> g_register_zoom_8bits(g_mask_pixel,0);
 vector<short> g_register_zoom_vector(g_mask_pixel,0);;
