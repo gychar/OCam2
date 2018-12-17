@@ -478,7 +478,7 @@ void MainWindow::AcquireImages()
     for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
         g_imgNormal_vector[i] = g_imageNormal[i];
     }
-    // Add Gaussian Noise
+        // Add Gaussian Noise
     if(g_addGaussianNoise_state){
         float mu = 29, sigma = 0.1;
         // Random device class instance, source of 'true' randomness for initializing random seed
@@ -3296,6 +3296,9 @@ void MainWindow::on_Flat_Checkbox_stateChanged(int arg1)
     if(arg1 == 2){
         g_flat_state = true;
         cout << "flat activated." << endl;
+        ui->BP_Slider->setValue(0);
+        ui->WP_Slider->setValue(16383);
+
     }
     if(arg1 == 0){
         g_flat_state = false;
@@ -3381,8 +3384,6 @@ int get_y(int in){
 }
 
 /*================= OTHER FUNCTION END ======================================*/
-
-
 
 
 
