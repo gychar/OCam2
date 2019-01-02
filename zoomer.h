@@ -30,10 +30,14 @@ private slots:
 
     void on_checkBox_toggled(bool checked);
 
+    void on_Zoomer_destroyed();
+
 private:
     Ui::Zoomer *ui;
     void display();
-//    void mousePressEvent(QMouseEvent *event);
+
+protected:
+    void closeEvent(QCloseEvent*event);
 };
 
 #endif // ZOOMER_H

@@ -41,6 +41,7 @@
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
+#include "zoomer.h"
 
 using namespace std;
 using namespace cv;
@@ -61,6 +62,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    Zoomer *Zoomer_win;
     bool eventFilter(QObject *obj, QEvent *ev);
 
 private slots:

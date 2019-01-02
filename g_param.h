@@ -73,6 +73,7 @@ extern bool g_surface_end;
 extern bool g_zoom_full;
 extern bool g_zoom_mean_done;
 extern bool g_load_correction;
+extern bool g_zoom_show;
 
 
 // PARAMETERS

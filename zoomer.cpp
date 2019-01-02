@@ -20,6 +20,10 @@ Zoomer::~Zoomer()
     delete ui;
 }
 
+void Zoomer::closeEvent(QCloseEvent *event){
+    g_zoom_show = false;
+}
+
 void Zoomer::display(){
     g_scene_zoom->clear();
     g_scene_zoom->addPixmap(QPixmap::fromImage(*g_zoom_image));
@@ -69,11 +73,3 @@ bool Zoomer::eventFilter(QObject *obj, QEvent *event)
 
     return false;
 }
-
-
-
-
-
-
-
-

@@ -102,17 +102,6 @@ MainWindow::MainWindow(QWidget *parent) :
     InitBigImageBuffer();
     g_BP = 0;
     g_WP = 16383;
-    //    // Start Acquisitions for this channel.
-    //    g_status = McSetParamInt(g_hChannel, MC_ChannelState, MC_ChannelState_ACTIVE);
-    //    if(g_status != MC_OK){
-    //        test_error();
-    //    }
-    //    // Generate a soft trigger event (STRG)
-    //    g_status = McSetParamInt(g_hChannel, MC_ForceTrig, MC_ForceTrig_TRIG);
-    //    if(g_status != MC_OK){
-    //        test_error();
-    //    }
-    //    status = McSetParamInt(g_hChannel, MC_NextTrigMode, MC_NextTrigMode_HARD);
 }
 
 // Destructor
@@ -163,14 +152,6 @@ void MainWindow::McCallback(PMCCALLBACKINFO CallBackInfo){
         McGetParamPtr(hSurface,MC_SurfaceAddr,(PVOID*)&pImage);
         // Stock current frame
         if(g_callback_mode == 0){
-            // Copy memory to g_surfacebuffer
-//            for(int i = 0;i<g_sizeX*g_sizeY;i++){
-//                g_surfacebuffer[g_surfacebuffercount][i] = (*(pImage+i));
-//            }
-//            // Merge two 8-bit char to a 16-bit short
-//            for(int j = 0; j < OCAM2_PIXELS_IMAGE_NORMAL; j++){
-//                g_imageRawNormal[j] = (static_cast<short>((g_surfacebuffer[g_surfacebuffercount][j*2+1])<<8)) | (g_surfacebuffer[g_surfacebuffercount][j*2]);
-//            }
             // Merge two 8-bit char to a 16-bit short
             for(int j = 0; j < OCAM2_PIXELS_RAW_NORMAL; j++){
                 g_imageRawNormal[j] = (static_cast<short>(*(pImage+j*2+1)<<8)) | *(pImage+j*2);
@@ -206,30 +187,6 @@ void MainWindow::McCallback(PMCCALLBACKINFO CallBackInfo){
         fprintf(stderr, "Acquisition Failure. Is a video source connected?\n");
         g_error = TRUE;
         break;
-        //    case MC_SIG_SURFACE_FILLED:
-        //    {
-        //        //        cout << dec << g_surfacebuffercount << endl;
-        //        hSurface = static_cast<MCHANDLE>(CallBackInfo->SignalInfo);
-        //        McGetParamPtr(hSurface,MC_SurfaceAddr,(PVOID*)&pImage);
-        //        unsigned char buffer[g_sizeX*g_sizeY];
-        //        // Copy memory to char array
-        //        for(int i = 0;i<g_sizeX*g_sizeY;i++){
-        //            buffer[i] = (*(pImage+i));
-        //        }
-        //        // Merge two 8-bit char to a 16-bit short
-        //        for(int i = 0;i<OCAM2_PIXELS_RAW_NORMAL;i++){
-        //            g_imageRawNormal[i] = (static_cast<short>((buffer[i*2+1])<<8)) |(buffer[i*2]);
-        //            //            g_surfacebuffer[g_surfacebuffercount][i] = (static_cast<short>((buffer[i*2+1])<<8)) |(buffer[i*2]);
-        //        }
-        //        ocam2_descramble(g_id, &g_number, g_imageNormal, g_imageRawNormal);
-        //        // Convert to 14 bits data
-        //        for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
-        //            g_imageNormal[i] = g_imageNormal[i] & 0x3fff;
-        //            g_surfacebuffer[g_surfacebuffercount][i] = g_imageNormal[i];
-        //        }
-        //        g_surfacebuffercount++;
-        //        break;
-        //    }
     default:
         fprintf(stderr,"Signal not handled: %d", CallBackInfo->Signal);
         g_error = TRUE;
@@ -478,7 +435,7 @@ void MainWindow::AcquireImages()
     for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
         g_imgNormal_vector[i] = g_imageNormal[i];
     }
-        // Add Gaussian Noise
+    // Add Gaussian Noise
     if(g_addGaussianNoise_state){
         float mu = 29, sigma = 0.1;
         // Random device class instance, source of 'true' randomness for initializing random seed
@@ -1451,8 +1408,8 @@ void MainWindow::on_Gain_Histo_PB_clicked()
             }
         }
         ui->op_progressBar->setValue(k+1);
-//        if(k % 100 == 0)
-//            cout << dec << k << " / " << frames << endl;
+        //        if(k % 100 == 0)
+        //            cout << dec << k << " / " << frames << endl;
     }
     cout << "Threshold ok" << endl;
     // Log
@@ -1497,6 +1454,11 @@ void MainWindow::on_Gain_Histo_PB_clicked()
 // Zoom Button
 void MainWindow::on_Zoom_PB_clicked()
 {
+    if(!g_zoom_show){
+        Zoomer_win = new Zoomer;
+        Zoomer_win->show();
+        g_zoom_show = true;
+    }
 }
 
 
@@ -1722,10 +1684,10 @@ void MainWindow::on_BufferAllocate_PB_clicked()
         g_callback_mode = 0;
         g_qtimeObj->start();
         g_buffersize = ui->Sequence_spinBox->value();
-//        g_surfacebuffer = new unsigned char *[g_buffersize];
+        //        g_surfacebuffer = new unsigned char *[g_buffersize];
         g_surfacebuffer_short = new short *[g_buffersize];
         for(int i = 0; i < g_buffersize; i++){
-//            g_surfacebuffer[i] = new unsigned char[g_sizeX*g_sizeY];
+            //            g_surfacebuffer[i] = new unsigned char[g_sizeX*g_sizeY];
             g_surfacebuffer_short[i] = new short[OCAM2_PIXELS_IMAGE_NORMAL];
         }
         int t = g_qtimeObj->elapsed();
@@ -1838,15 +1800,15 @@ void MainWindow::on_BufferSave_PB_clicked()
     data[2] = g_WP;
     fwrite(data,4,3,pFile);
     for(int k = 0; k < g_buffersize; k++){
-//        // Merge two 8-bit char to a 16-bit short
-//        for(int j = 0;j<OCAM2_PIXELS_RAW_NORMAL;j++){
-//            g_imageRawNormal[j] = (static_cast<short>((g_surfacebuffer[k][j*2+1])<<8)) | (g_surfacebuffer[k][j*2]);
-//        }
-//        ocam2_descramble(g_id, &g_number, g_imageNormal, g_imageRawNormal);
-//        // Convert to 14 bits data
-//        for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
-//            imageNormal[i] = g_imageNormal[i] & 0x3fff;
-//        }
+        //        // Merge two 8-bit char to a 16-bit short
+        //        for(int j = 0;j<OCAM2_PIXELS_RAW_NORMAL;j++){
+        //            g_imageRawNormal[j] = (static_cast<short>((g_surfacebuffer[k][j*2+1])<<8)) | (g_surfacebuffer[k][j*2]);
+        //        }
+        //        ocam2_descramble(g_id, &g_number, g_imageNormal, g_imageRawNormal);
+        //        // Convert to 14 bits data
+        //        for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
+        //            imageNormal[i] = g_imageNormal[i] & 0x3fff;
+        //        }
         for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
             imageNormal[i] = g_surfacebuffer_short[k][i];
         }
@@ -1893,8 +1855,8 @@ void MainWindow::on_BufferLoad_PB_clicked()
                 qint16 val;
                 for(int j = 0; j < loadframes; j++){
                     for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL;i++){
-//                        in >> val;
-//                        g_BigImageBuffer[j][i] = val;
+                        //                        in >> val;
+                        //                        g_BigImageBuffer[j][i] = val;
                         in >> g_BigImageBuffer[j][i];
                     }
                     ui->progressBar->setValue(j);

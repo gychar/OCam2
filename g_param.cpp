@@ -63,6 +63,7 @@ bool g_surface_end = false;
 bool g_zoom_full = false;
 bool g_zoom_mean_done = false;
 bool g_load_correction = false;
+bool g_zoom_show = false;
 
 
 // PARAMETERS
