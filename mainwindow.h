@@ -63,6 +63,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     Zoomer *Zoomer_win;
+    QTimer *timer;
     bool eventFilter(QObject *obj, QEvent *ev);
 
 private slots:
@@ -169,6 +170,8 @@ private slots:
     void on_Flat_Checkbox_stateChanged(int arg1);
 
     void on_Load_Bias_PB_clicked();
+
+    void onTimeOut();
 
 private:
     Ui::MainWindow *ui;

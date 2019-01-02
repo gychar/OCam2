@@ -88,6 +88,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    timer = new QTimer(this);
+    connect(timer,SIGNAL(timeout()),this,SLOT(onTimeOut()));
+    timer->start(1000);
     qApp->installEventFilter(this);
     g_image = new QImage();
     g_zoom_image = new QImage();
@@ -382,6 +385,8 @@ void MainWindow::InitBigImageBuffer(){
         memset(g_BigImageBuffer[i],0,OCAM2_PIXELS_IMAGE_NORMAL*sizeof(short));
     }
 }
+
+
 
 /*================= INITIALIZATIONS END ====================================*/
 
@@ -750,6 +755,10 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     return false;
 }
 
+void MainWindow::onTimeOut()
+{
+    UpdateTemp();
+}
 /*================= FUNCTIONS END ======================================*/
 
 /*================= QT GUI BUTTONS START ======================================*/
@@ -1283,31 +1292,26 @@ void MainWindow::on_Snap_shot_PB_clicked()
 // Run Button
 void MainWindow::on_Run_PB_clicked(bool checked)
 {
-    try{
-        QCoreApplication::processEvents();
-        if(checked==true){
-            g_run_state = true;
-            ui->Run_PB->setText("Stop");
-            cout << "Acquiring..." << endl;
-            while(g_run_state == true){
-                AcquireImages();
-                display(g_imageNormal8bits);
-                ZoomImage();
-                QString imagenum = QString::number(g_num-1) + ".dat";
-                ui->ImageName_Label->setText(imagenum);
-                UpdateTemp();
-                QTest::qWait(0);
-            }
+    QCoreApplication::processEvents();
+    if(checked==true){
+        g_run_state = true;
+        ui->Run_PB->setText("Stop");
+        cout << "Acquiring..." << endl;
+        while(g_run_state == true){
+            AcquireImages();
+            display(g_imageNormal8bits);
+            ZoomImage();
+            QString imagenum = QString::number(g_num-1) + ".dat";
+            ui->ImageName_Label->setText(imagenum);
+            QTest::qWait(0);
         }
-        if(checked == false){
-            ui->Run_PB->setText("Run");
-            g_run_state = false;
-            cout << "Stopped..." << endl;
-        }
-        ui->Statistics_PB->setEnabled(true);
-    } catch (const char* msg) {
-        cerr << msg << endl;
     }
+    if(checked == false){
+        ui->Run_PB->setText("Run");
+        g_run_state = false;
+        cout << "Stopped..." << endl;
+    }
+    ui->Statistics_PB->setEnabled(true);
 }
 
 // Gain Histrogram Button
