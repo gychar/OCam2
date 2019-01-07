@@ -26,6 +26,7 @@
 #include <QtEndian>
 #include <QKeyEvent>
 #include <QTime>
+#include <QDateTime>
 #include <QTest>
 #include <QTableWidgetItem>
 #include <QMouseEvent>
@@ -194,6 +195,7 @@ private:
     vector<float> short2float(short in[], const int length);
     static void *ReadData(void * SerialRefPtr);
     void UpdateTemp();
+    void GetTime();
     void ZoomImage();
     void mousePressEvent(QMouseEvent *event);
 };

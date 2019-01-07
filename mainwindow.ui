@@ -104,19 +104,6 @@
      <string>Exit</string>
     </property>
    </widget>
-   <widget class="QLabel" name="Time_Label">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>620</y>
-      <width>67</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Time: </string>
-    </property>
-   </widget>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
@@ -577,7 +564,7 @@
       <x>10</x>
       <y>660</y>
       <width>521</width>
-      <height>159</height>
+      <height>104</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="BPWP_Layout">
@@ -1050,6 +1037,26 @@
      </item>
      <item row="0" column="1" colspan="2">
       <widget class="QLabel" name="Temp_CoolingPower_Value">
+       <property name="frameShape">
+        <enum>QFrame::WinPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="Time_Label">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4" colspan="5">
+      <widget class="QLabel" name="Time_Value">
        <property name="frameShape">
         <enum>QFrame::WinPanel</enum>
        </property>

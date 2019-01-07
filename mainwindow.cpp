@@ -643,6 +643,13 @@ void MainWindow::UpdateTemp(){
     }
 }
 
+// Get system current time
+void MainWindow::GetTime(){
+    QDateTime now = QDateTime::currentDateTime();
+    QString now_str = now.toString("yyyy.MM.dd hh:mm:ss ddd");
+    ui->Time_Value->setText(now_str);
+}
+
 // Zoom image
 void MainWindow::ZoomImage(){
     // Zoom = register
@@ -758,6 +765,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 void MainWindow::onTimeOut()
 {
     UpdateTemp();
+    GetTime();
 }
 /*================= FUNCTIONS END ======================================*/
 
