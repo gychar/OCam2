@@ -59,8 +59,8 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>850</x>
-      <y>150</y>
+      <x>840</x>
+      <y>260</y>
       <width>371</width>
       <height>351</height>
      </rect>
@@ -73,10 +73,13 @@
        </property>
       </widget>
      </item>
-     <item row="10" column="1">
-      <widget class="QPushButton" name="Gain_Histo_PB">
+     <item row="15" column="0" colspan="2">
+      <widget class="QTextEdit" name="Console_Output_TextEdit"/>
+     </item>
+     <item row="11" column="1">
+      <widget class="QPushButton" name="Temp_p30_PB">
        <property name="text">
-        <string>Gain Histogram</string>
+        <string>Temp 30°C</string>
        </property>
       </widget>
      </item>
@@ -87,6 +90,16 @@
        </property>
       </widget>
      </item>
+     <item row="11" column="0">
+      <widget class="QPushButton" name="Temp_n45_PB">
+       <property name="text">
+        <string>Temp -45°C</string>
+       </property>
+      </widget>
+     </item>
+     <item row="13" column="0" colspan="2">
+      <widget class="QLineEdit" name="Console_Input_LineEdit"/>
+     </item>
      <item row="10" column="0">
       <widget class="QPushButton" name="Overillumination_Reset_PB">
        <property name="text">
@@ -94,11 +107,12 @@
        </property>
       </widget>
      </item>
-     <item row="11" column="0" colspan="2">
-      <widget class="QLineEdit" name="Console_Input_LineEdit"/>
-     </item>
-     <item row="13" column="0" colspan="2">
-      <widget class="QTextEdit" name="Console_Output_TextEdit"/>
+     <item row="10" column="1">
+      <widget class="QPushButton" name="Temp_off_PB">
+       <property name="text">
+        <string>Temp off</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -166,7 +180,7 @@
       <x>30</x>
       <y>390</y>
       <width>241</width>
-      <height>91</height>
+      <height>104</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="BPWP_Layout">
@@ -450,10 +464,10 @@
    <widget class="QPushButton" name="Zoom_PB">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>490</y>
-      <width>89</width>
-      <height>25</height>
+      <x>910</x>
+      <y>110</y>
+      <width>171</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -472,6 +486,15 @@
     <property name="currentIndex">
      <number>0</number>
     </property>
+    <property name="usesScrollButtons">
+     <bool>true</bool>
+    </property>
+    <property name="documentMode">
+     <bool>false</bool>
+    </property>
+    <property name="tabsClosable">
+     <bool>false</bool>
+    </property>
     <widget class="QWidget" name="User_Tab">
      <attribute name="title">
       <string>User</string>
@@ -482,7 +505,7 @@
         <x>10</x>
         <y>10</y>
         <width>129</width>
-        <height>231</height>
+        <height>266</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="NetSave_Layout">
@@ -527,6 +550,13 @@
         <widget class="QPushButton" name="SingleLoad_PB">
          <property name="text">
           <string>Single Load</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="AcquireCycle_PB">
+         <property name="text">
+          <string>Acquire Cycle</string>
          </property>
         </widget>
        </item>
@@ -628,7 +658,7 @@
         <x>150</x>
         <y>10</y>
         <width>101</width>
-        <height>120</height>
+        <height>147</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="Stats_Layout">
@@ -748,6 +778,32 @@
        </item>
       </layout>
      </widget>
+     <widget class="QCheckBox" name="Flat_Checkbox">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>170</y>
+        <width>99</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Flat</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="Dark_Checkbox">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>199</y>
+        <width>99</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Dark</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="Setup_Tab">
      <attribute name="title">
@@ -774,13 +830,6 @@
         <widget class="QPushButton" name="LoadDark_PB">
          <property name="text">
           <string>Load Dark</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QCheckBox" name="Dark_Checkbox">
-         <property name="text">
-          <string>Dark</string>
          </property>
         </widget>
        </item>
@@ -821,13 +870,6 @@
        </item>
        <item row="1" column="0">
         <widget class="QPushButton" name="Flat_PB">
-         <property name="text">
-          <string>Flat</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QCheckBox" name="Flat_Checkbox">
          <property name="text">
           <string>Flat</string>
          </property>
@@ -991,13 +1033,6 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0" colspan="2">
-        <widget class="QPushButton" name="AcquireCycle_PB">
-         <property name="text">
-          <string>Acquire Cycle</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="2" rowspan="4">
         <widget class="QGraphicsView" name="graphicsView_2"/>
        </item>
@@ -1149,6 +1184,19 @@
       </property>
       <property name="tickPosition">
        <enum>QSlider::TicksBothSides</enum>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Gain_Histo_PB">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>300</y>
+        <width>181</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Gain Histogram</string>
       </property>
      </widget>
     </widget>

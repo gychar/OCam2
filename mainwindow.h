@@ -174,6 +174,12 @@ private slots:
 
     void onTimeOut();
 
+    void on_Temp_n45_PB_clicked();
+
+    void on_Temp_p30_PB_clicked();
+
+    void on_Temp_off_PB_clicked();
+
 private:
     Ui::MainWindow *ui;
 

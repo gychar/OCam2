@@ -92,6 +92,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(timer,SIGNAL(timeout()),this,SLOT(onTimeOut()));
     timer->start(1000);
     qApp->installEventFilter(this);
+    ui->tabWidget->setCurrentIndex(0);
     g_image = new QImage();
     g_zoom_image = new QImage();
     g_scene = new QGraphicsScene;
@@ -2508,7 +2509,24 @@ void MainWindow::on_PNG_PB_clicked()
 void MainWindow::on_Temp_PB_clicked()
 {
     SerialCommand("temp",0);
-    UpdateTemp();
+}
+
+// Set the temperature to -45°C
+void MainWindow::on_Temp_n45_PB_clicked()
+{
+    SerialCommand("temp -45",0);
+}
+
+// Set the temperature to 30°C
+void MainWindow::on_Temp_p30_PB_clicked()
+{
+    SerialCommand("temp 30", 0);
+}
+
+// Set the cooling off
+void MainWindow::on_Temp_off_PB_clicked()
+{
+    SerialCommand("temp off", 0);
 }
 
 // Reset overillumination protection
@@ -3358,6 +3376,11 @@ int get_y(int in){
 }
 
 /*================= OTHER FUNCTION END ======================================*/
+
+
+
+
+
 
 
 
