@@ -4,7 +4,8 @@ Maths::Maths()
 {
 }
 
-float Maths::Median(vector<float> const& v)
+template <typename T>
+T Maths::Median(vector<T> const& v)
 {
     bool isEven = !(v.size() % 2);
     size_t n    = v.size() / 2;
@@ -18,8 +19,9 @@ float Maths::Median(vector<float> const& v)
     return isEven ? 0.5 * (v[vi.at(n-1)] + v[vi.at(n)]) : v[vi.at(n)];
 }
 
-float Maths::Mean(vector<float> a){
-    float mean = 0;
+template <typename T>
+T Maths::Mean(vector<T> a){
+    T mean = 0;
     int n = a.size();
     for(int i = 0; i < n; i++){
         mean += a[i];
@@ -28,10 +30,11 @@ float Maths::Mean(vector<float> a){
     return mean;
 }
 
-float Maths::Variance(vector<float> a){
-    float var = 0;
+template <typename T>
+T Maths::Variance(vector<T> a){
+    T var = 0;
     int n = a.size();
-    float mean = Maths::Mean(a);
+    T mean = Maths::Mean(a);
     for(int i = 0; i < n; i++){
         var += (a[i] - mean)*(a[i] - mean);
     }
@@ -39,8 +42,9 @@ float Maths::Variance(vector<float> a){
     return var;
 }
 
-float Maths::StandardDeviation(vector<float> a){
-    float SD = 0;
+template <typename T>
+T Maths::StandardDeviation(vector<T> a){
+    T SD = 0;
     int n = a.size();
     SD = sqrt(static_cast<double>(Maths::Variance(a)));
     return SD;

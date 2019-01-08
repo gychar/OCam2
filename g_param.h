@@ -72,6 +72,8 @@ extern bool g_addGaussianNoise_state;
 extern bool g_surface_end;
 extern bool g_zoom_full;
 extern bool g_zoom_mean_done;
+extern bool g_zoom_median_done;
+extern bool g_zoom_sd_done;
 extern bool g_load_correction;
 extern bool g_zoom_show;
 
@@ -116,6 +118,9 @@ extern int g_zoom_id_register;
 extern unsigned int g_zoom_x;
 extern unsigned int g_zoom_y;
 extern double g_zoom_mean;
+extern double g_zoom_median;
+extern double g_zoom_sd;
+
 
 // NOISE
 extern float g_Sigma2Read;

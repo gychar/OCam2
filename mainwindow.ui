@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1307</width>
-    <height>888</height>
+    <width>1283</width>
+    <height>652</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -37,61 +37,13 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QSlider" name="Threshold_Slider">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>540</y>
-      <width>245</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="tabletTracking">
-     <bool>false</bool>
-    </property>
-    <property name="maximum">
-     <number>100</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-    <property name="tickPosition">
-     <enum>QSlider::TicksBothSides</enum>
-    </property>
-   </widget>
-   <widget class="QLabel" name="Thresh_Label">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>590</y>
-      <width>251</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;0 %&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>570</y>
-      <width>81</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Threshold</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="Exit_PB">
     <property name="geometry">
      <rect>
-      <x>850</x>
-      <y>30</y>
-      <width>91</width>
-      <height>61</height>
+      <x>910</x>
+      <y>40</y>
+      <width>211</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
@@ -107,311 +59,8 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>550</x>
-      <y>140</y>
-      <width>281</width>
-      <height>229</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="Stats_Display_Layout">
-     <item>
-      <widget class="QLabel" name="GlobalStat_Label">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Global Statistics</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="Mean_Label">
-       <property name="text">
-        <string>Mean: </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="Median_Label">
-       <property name="text">
-        <string>Median: </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="Variance_Label">
-       <property name="text">
-        <string>Variance: </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="StandardDeviation_Label">
-       <property name="text">
-        <string>Ecart-type: </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="SNR_Label">
-       <property name="text">
-        <string>SNR:</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>420</x>
-      <y>10</y>
-      <width>364</width>
-      <height>121</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="Dark_Layout">
-     <item row="1" column="0">
-      <widget class="QPushButton" name="Flat_PB">
-       <property name="text">
-        <string>Flat</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QLabel" name="Dark_Max_Label">
-       <property name="text">
-        <string>Max: </string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="LoadDark_PB">
-       <property name="text">
-        <string>Load Dark</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="3">
-      <widget class="QProgressBar" name="op_progressBar">
-       <property name="value">
-        <number>0</number>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QLabel" name="Dark_Min_Label">
-       <property name="text">
-        <string>Min: </string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="Load_Bias_PB">
-       <property name="text">
-        <string>Load</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QCheckBox" name="Flat_Checkbox">
-       <property name="text">
-        <string>Flat</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="LoadFlat_PB">
-       <property name="text">
-        <string>Load Flat</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="Dark_PB">
-       <property name="text">
-        <string>Dark</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QCheckBox" name="Dark_Checkbox">
-       <property name="text">
-        <string>Dark</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLabel" name="Gain_Label">
-       <property name="text">
-        <string>Gain = </string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QSpinBox" name="Gain_SpinBox">
-       <property name="maximum">
-        <number>1000</number>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>10</y>
-      <width>129</width>
-      <height>381</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="NetSave_Layout">
-     <item>
-      <widget class="QPushButton" name="Preset_PB">
-       <property name="text">
-        <string>Preset </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="Snap_shot_PB">
-       <property name="text">
-        <string>Snap shot</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="Run_PB">
-       <property name="text">
-        <string>Run</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-       <property name="autoRepeat">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="SingleSave_PB">
-       <property name="text">
-        <string>Single Save</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="SingleLoad_PB">
-       <property name="text">
-        <string>Single Load</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="Sequence_Label">
-       <property name="text">
-        <string>Frames</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QSpinBox" name="Sequence_spinBox">
-       <property name="buttonSymbols">
-        <enum>QAbstractSpinBox::UpDownArrows</enum>
-       </property>
-       <property name="minimum">
-        <number>0</number>
-       </property>
-       <property name="maximum">
-        <number>1240200</number>
-       </property>
-       <property name="value">
-        <number>2067</number>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="Max_checkBox">
-       <property name="text">
-        <string>Max frames</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="SequenceSave_PB">
-       <property name="text">
-        <string>Sequence Save</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="SequenceLoad_PB">
-       <property name="text">
-        <string>Sequence Load</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="Median_Checkbox">
-       <property name="text">
-        <string>Median</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="ReadNoise_Checkbox">
-       <property name="text">
-        <string>Read Noise</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>420</x>
-      <y>130</y>
-      <width>101</width>
-      <height>120</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="Stats_Layout">
-     <item>
-      <widget class="QPushButton" name="Statistics_PB">
-       <property name="text">
-        <string>Statistics</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="Histo_PB">
-       <property name="text">
-        <string>Histogram</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="PNG_PB">
-       <property name="text">
-        <string>Save PNG</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>410</y>
+      <x>850</x>
+      <y>150</y>
       <width>371</width>
       <height>351</height>
      </rect>
@@ -424,18 +73,19 @@
        </property>
       </widget>
      </item>
+     <item row="10" column="1">
+      <widget class="QPushButton" name="Gain_Histo_PB">
+       <property name="text">
+        <string>Gain Histogram</string>
+       </property>
+      </widget>
+     </item>
      <item row="9" column="0">
       <widget class="QPushButton" name="Temp_PB">
        <property name="text">
         <string>Temp</string>
        </property>
       </widget>
-     </item>
-     <item row="13" column="0" colspan="2">
-      <widget class="QTextEdit" name="Console_Output_TextEdit"/>
-     </item>
-     <item row="11" column="0" colspan="2">
-      <widget class="QLineEdit" name="Console_Input_LineEdit"/>
      </item>
      <item row="10" column="0">
       <widget class="QPushButton" name="Overillumination_Reset_PB">
@@ -444,59 +94,11 @@
        </property>
       </widget>
      </item>
-     <item row="10" column="1">
-      <widget class="QPushButton" name="Gain_Histo_PB">
-       <property name="text">
-        <string>Gain Histogram</string>
-       </property>
-      </widget>
+     <item row="11" column="0" colspan="2">
+      <widget class="QLineEdit" name="Console_Input_LineEdit"/>
      </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>450</y>
-      <width>121</width>
-      <height>191</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="Buffer_Layout">
-     <item>
-      <widget class="QPushButton" name="BufferAllocate_PB">
-       <property name="text">
-        <string>Allocate Buffer</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="BufferAcquire_PB">
-       <property name="text">
-        <string>Acquire Buffer</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="BufferSave_PB">
-       <property name="text">
-        <string>Save Buffer</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="BufferLoad_PB">
-       <property name="text">
-        <string>Load Buffer</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="BufferDisplay_PB">
-       <property name="text">
-        <string>Display Buffer</string>
-       </property>
-      </widget>
+     <item row="13" column="0" colspan="2">
+      <widget class="QTextEdit" name="Console_Output_TextEdit"/>
      </item>
     </layout>
    </widget>
@@ -561,10 +163,10 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>660</y>
-      <width>521</width>
-      <height>104</height>
+      <x>30</x>
+      <y>390</y>
+      <width>241</width>
+      <height>91</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="BPWP_Layout">
@@ -636,248 +238,17 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>990</x>
-      <y>210</y>
-      <width>257</width>
-      <height>216</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="StatsTable_Layout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="image_statistics_label">
-       <property name="text">
-        <string>          Mean             Var                  SD</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QTableWidget" name="image_table">
-       <property name="rowCount">
-        <number>8</number>
-       </property>
-       <property name="columnCount">
-        <number>3</number>
-       </property>
-       <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>80</number>
-       </attribute>
-       <attribute name="verticalHeaderDefaultSectionSize">
-        <number>21</number>
-       </attribute>
-       <row/>
-       <row/>
-       <row/>
-       <row/>
-       <row/>
-       <row/>
-       <row/>
-       <row/>
-       <column/>
-       <column/>
-       <column/>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>860</x>
-      <y>120</y>
-      <width>93</width>
-      <height>244</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="ThreshSave_Layout">
-     <item>
-      <widget class="QPushButton" name="ThreshSave_PB">
-       <property name="text">
-        <string>Thresh Save</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="ThreshLoad_PB">
-       <property name="text">
-        <string>Thresh Load</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="AddNoise_PB">
-       <property name="text">
-        <string>Add Noise</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="Save_PB">
-       <property name="text">
-        <string>Save</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="Load_PB">
-       <property name="text">
-        <string>Load</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>960</x>
-      <y>10</y>
-      <width>282</width>
-      <height>152</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0" colspan="2">
-      <widget class="QPushButton" name="AcquireCycle_PB">
-       <property name="text">
-        <string>Acquire Cycle</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2" rowspan="4">
-      <widget class="QGraphicsView" name="graphicsView_2"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="statistics_label">
-       <property name="text">
-        <string>1</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="MaskStatistics_PB">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="text">
-        <string>Mask Statistics</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QSpinBox" name="spinBox">
-       <property name="minimum">
-        <number>1</number>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QPushButton" name="PlotStatistics_PB">
-       <property name="text">
-        <string>Plot</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0" colspan="2">
-      <widget class="QProgressBar" name="Mask_processBar">
-       <property name="value">
-        <number>0</number>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QCheckBox" name="GaussianNoise_CheckBox">
-    <property name="geometry">
-     <rect>
-      <x>780</x>
-      <y>370</y>
-      <width>161</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Add Gaussian Noise</string>
-    </property>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>420</x>
-      <y>330</y>
-      <width>101</width>
-      <height>321</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QPushButton" name="GetMask_PB">
-       <property name="text">
-        <string>Get Mask</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="AcquireSet_PB">
-       <property name="text">
-        <string>Acquire Set</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="LoadSet_PB">
-       <property name="text">
-        <string>Load Set</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QSlider" name="SetNum_Slider">
-       <property name="minimum">
-        <number>1</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="tickPosition">
-        <enum>QSlider::TicksBothSides</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QPushButton" name="Test_PB">
-    <property name="geometry">
-     <rect>
-      <x>670</x>
-      <y>370</y>
-      <width>101</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Test</string>
-    </property>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>770</y>
+      <x>30</x>
+      <y>530</y>
       <width>631</width>
-      <height>100</height>
+      <height>105</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="1" column="3">
-      <widget class="QLabel" name="Temp_CPU_Value">
-       <property name="frameShape">
-        <enum>QFrame::WinPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
-       </property>
+     <item row="1" column="0">
+      <widget class="QLabel" name="Temp_Label_CCD">
        <property name="text">
-        <string/>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;CCD&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
@@ -894,27 +265,7 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="7">
-      <widget class="QLabel" name="Temp_Label_BIAS">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;BIAS&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="3">
-      <widget class="QLabel" name="Temp_LEFT_Value">
-       <property name="frameShape">
-        <enum>QFrame::WinPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="6">
+     <item row="1" column="5">
       <widget class="QLabel" name="Temp_POWER_Value">
        <property name="frameShape">
         <enum>QFrame::WinPanel</enum>
@@ -927,29 +278,15 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="Temp_Label_CCD">
+     <item row="0" column="0">
+      <widget class="QLabel" name="Temp_Label_CoolingPower">
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;CCD&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Cooling Power&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="Temp_Label_WATER">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;WATER&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QLabel" name="Temp_Label_LEFT">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;LEFT&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="6">
-      <widget class="QLabel" name="Temp_RIGHT_Value">
+     <item row="1" column="3">
+      <widget class="QLabel" name="Temp_CPU_Value">
        <property name="frameShape">
         <enum>QFrame::WinPanel</enum>
        </property>
@@ -961,49 +298,8 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="7">
-      <widget class="QLabel" name="Temp_Label_SET">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;SET&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="8">
-      <widget class="QLabel" name="Temp_SET_Value">
-       <property name="frameShape">
-        <enum>QFrame::WinPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="4">
-      <widget class="QLabel" name="Temp_Label_RIGHT">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;RIGHT&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="4">
-      <widget class="QLabel" name="Temp_Label_POWER">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;POWER&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QLabel" name="Temp_Label_CPU">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;CPU&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="8">
-      <widget class="QLabel" name="Temp_BIAS_Value">
+     <item row="0" column="5" colspan="2">
+      <widget class="QLabel" name="Time_Value">
        <property name="frameShape">
         <enum>QFrame::WinPanel</enum>
        </property>
@@ -1028,10 +324,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="Temp_Label_CoolingPower">
+     <item row="1" column="2">
+      <widget class="QLabel" name="Temp_Label_CPU">
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Cooling Power&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;CPU&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
@@ -1048,15 +344,43 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
+     <item row="1" column="6">
+      <widget class="QLabel" name="Temp_Label_BIAS">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;BIAS&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
       <widget class="QLabel" name="Time_Label">
        <property name="text">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="4" colspan="5">
-      <widget class="QLabel" name="Time_Value">
+     <item row="1" column="4">
+      <widget class="QLabel" name="Temp_Label_POWER">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;POWER&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="Temp_Label_WATER">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;WATER&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QLabel" name="Temp_Label_LEFT">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;LEFT&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="8">
+      <widget class="QLabel" name="Temp_BIAS_Value">
        <property name="frameShape">
         <enum>QFrame::WinPanel</enum>
        </property>
@@ -1068,26 +392,66 @@
        </property>
       </widget>
      </item>
+     <item row="2" column="4">
+      <widget class="QLabel" name="Temp_Label_RIGHT">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;RIGHT&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="3">
+      <widget class="QLabel" name="Temp_LEFT_Value">
+       <property name="frameShape">
+        <enum>QFrame::WinPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="8">
+      <widget class="QLabel" name="Temp_SET_Value">
+       <property name="frameShape">
+        <enum>QFrame::WinPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="5">
+      <widget class="QLabel" name="Temp_RIGHT_Value">
+       <property name="frameShape">
+        <enum>QFrame::WinPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="6">
+      <widget class="QLabel" name="Temp_Label_SET">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;SET&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
     </layout>
-   </widget>
-   <widget class="QPushButton" name="PTC_PB">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>370</y>
-      <width>101</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>PTC</string>
-    </property>
    </widget>
    <widget class="QPushButton" name="Zoom_PB">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>810</y>
+      <x>40</x>
+      <y>490</y>
       <width>89</width>
       <height>25</height>
      </rect>
@@ -1096,35 +460,707 @@
      <string>Zoom</string>
     </property>
    </widget>
-   <widget class="QSpinBox" name="Register_SpinBox">
+   <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>810</y>
-      <width>48</width>
-      <height>26</height>
+      <x>290</x>
+      <y>10</y>
+      <width>531</width>
+      <height>511</height>
      </rect>
     </property>
-    <property name="minimum">
-     <number>1</number>
+    <property name="currentIndex">
+     <number>0</number>
     </property>
-    <property name="maximum">
-     <number>8</number>
-    </property>
+    <widget class="QWidget" name="User_Tab">
+     <attribute name="title">
+      <string>User</string>
+     </attribute>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>129</width>
+        <height>231</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="NetSave_Layout">
+       <item>
+        <widget class="QPushButton" name="Preset_PB">
+         <property name="text">
+          <string>Preset </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="Snap_shot_PB">
+         <property name="text">
+          <string>Snap shot</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="Run_PB">
+         <property name="text">
+          <string>Run</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+         <property name="autoRepeat">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="SingleSave_PB">
+         <property name="text">
+          <string>Single Save</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="SingleLoad_PB">
+         <property name="text">
+          <string>Single Load</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="Sequence_Label">
+         <property name="text">
+          <string>Frames</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="Sequence_spinBox">
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::UpDownArrows</enum>
+         </property>
+         <property name="minimum">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <number>1240200</number>
+         </property>
+         <property name="value">
+          <number>2067</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="Max_checkBox">
+         <property name="text">
+          <string>Max frames</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>10</y>
+        <width>251</width>
+        <height>229</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="Stats_Display_Layout">
+       <item>
+        <widget class="QLabel" name="GlobalStat_Label">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Global Statistics</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="Mean_Label">
+         <property name="text">
+          <string>Mean: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="Median_Label">
+         <property name="text">
+          <string>Median: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="Variance_Label">
+         <property name="text">
+          <string>Variance: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="StandardDeviation_Label">
+         <property name="text">
+          <string>Ecart-type: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="SNR_Label">
+         <property name="text">
+          <string>SNR:</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>10</y>
+        <width>101</width>
+        <height>120</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="Stats_Layout">
+       <item>
+        <widget class="QPushButton" name="Statistics_PB">
+         <property name="text">
+          <string>Statistics</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="Histo_PB">
+         <property name="text">
+          <string>Histogram</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="PNG_PB">
+         <property name="text">
+          <string>Save PNG</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>250</y>
+        <width>257</width>
+        <height>216</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="StatsTable_Layout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="image_statistics_label">
+         <property name="text">
+          <string>          Mean             Var                  SD</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QTableWidget" name="image_table">
+         <property name="rowCount">
+          <number>8</number>
+         </property>
+         <property name="columnCount">
+          <number>3</number>
+         </property>
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>80</number>
+         </attribute>
+         <attribute name="verticalHeaderDefaultSectionSize">
+          <number>21</number>
+         </attribute>
+         <row/>
+         <row/>
+         <row/>
+         <row/>
+         <row/>
+         <row/>
+         <row/>
+         <row/>
+         <column/>
+         <column/>
+         <column/>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>250</y>
+        <width>131</width>
+        <height>191</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="Buffer_Layout">
+       <item>
+        <widget class="QPushButton" name="BufferAllocate_PB">
+         <property name="text">
+          <string>Allocate Buffer</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="BufferAcquire_PB">
+         <property name="text">
+          <string>Acquire Buffer</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="BufferSave_PB">
+         <property name="text">
+          <string>Save Buffer</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="BufferLoad_PB">
+         <property name="text">
+          <string>Load Buffer</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="BufferDisplay_PB">
+         <property name="text">
+          <string>Display Buffer</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="Setup_Tab">
+     <attribute name="title">
+      <string>Setup</string>
+     </attribute>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>372</width>
+        <height>145</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="Dark_Layout">
+       <item row="0" column="0">
+        <widget class="QPushButton" name="Dark_PB">
+         <property name="text">
+          <string>Dark</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="LoadDark_PB">
+         <property name="text">
+          <string>Load Dark</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QCheckBox" name="Dark_Checkbox">
+         <property name="text">
+          <string>Dark</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="3">
+        <widget class="QProgressBar" name="op_progressBar">
+         <property name="value">
+          <number>0</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="Gain_Label">
+         <property name="text">
+          <string>Gain = </string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QPushButton" name="Load_Bias_PB">
+         <property name="text">
+          <string>Load</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QLabel" name="Dark_Max_Label">
+         <property name="text">
+          <string>Max: </string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QSpinBox" name="Gain_SpinBox">
+         <property name="maximum">
+          <number>1000</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="Flat_PB">
+         <property name="text">
+          <string>Flat</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QCheckBox" name="Flat_Checkbox">
+         <property name="text">
+          <string>Flat</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="LoadFlat_PB">
+         <property name="text">
+          <string>Load Flat</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QLabel" name="Dark_Min_Label">
+         <property name="text">
+          <string>Min: </string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QPushButton" name="Darkimage_PB">
+      <property name="geometry">
+       <rect>
+        <x>410</x>
+        <y>30</y>
+        <width>86</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Dark Image</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="Debug_Tab">
+     <attribute name="title">
+      <string>Debug</string>
+     </attribute>
+     <widget class="QPushButton" name="PTC_PB">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>10</y>
+        <width>101</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>PTC</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Test_PB">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>50</y>
+        <width>101</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Test</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="GaussianNoise_CheckBox">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>90</y>
+        <width>161</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Add Gaussian Noise</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>113</width>
+        <height>271</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="ThreshSave_Layout">
+       <item>
+        <widget class="QPushButton" name="ThreshSave_PB">
+         <property name="text">
+          <string>Thresh Save</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="ThreshLoad_PB">
+         <property name="text">
+          <string>Thresh Load</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="AddNoise_PB">
+         <property name="text">
+          <string>Add Noise</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="Save_PB">
+         <property name="text">
+          <string>Save</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="Load_PB">
+         <property name="text">
+          <string>Load</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="SequenceLoad_PB">
+         <property name="text">
+          <string>Sequence Load</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="SequenceSave_PB">
+         <property name="text">
+          <string>Sequence Save</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="Median_Checkbox">
+         <property name="text">
+          <string>Median</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="ReadNoise_Checkbox">
+         <property name="text">
+          <string>Read Noise</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>300</y>
+        <width>282</width>
+        <height>152</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0" colspan="2">
+        <widget class="QPushButton" name="AcquireCycle_PB">
+         <property name="text">
+          <string>Acquire Cycle</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2" rowspan="4">
+        <widget class="QGraphicsView" name="graphicsView_2"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="statistics_label">
+         <property name="text">
+          <string>1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="MaskStatistics_PB">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Mask Statistics</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QSpinBox" name="spinBox">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QPushButton" name="PlotStatistics_PB">
+         <property name="text">
+          <string>Plot</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QProgressBar" name="Mask_processBar">
+         <property name="value">
+          <number>0</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>410</x>
+        <y>10</y>
+        <width>101</width>
+        <height>241</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="GetMask_PB">
+         <property name="text">
+          <string>Get Mask</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="AcquireSet_PB">
+         <property name="text">
+          <string>Acquire Set</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="LoadSet_PB">
+         <property name="text">
+          <string>Load Set</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSlider" name="SetNum_Slider">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="tickPosition">
+          <enum>QSlider::TicksBothSides</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QSpinBox" name="Register_SpinBox">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>120</y>
+        <width>48</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>8</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>170</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Threshold</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="Thresh_Label">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>190</y>
+        <width>251</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;0 %&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QSlider" name="Threshold_Slider">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>210</y>
+        <width>245</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="tabletTracking">
+       <bool>false</bool>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="tickPosition">
+       <enum>QSlider::TicksBothSides</enum>
+      </property>
+     </widget>
+    </widget>
    </widget>
-   <widget class="QPushButton" name="Darkimage_PB">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>270</y>
-      <width>86</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Dark Image</string>
-    </property>
-   </widget>
+   <zorder>tabWidget</zorder>
+   <zorder>graphicsView</zorder>
+   <zorder>Exit_PB</zorder>
+   <zorder>layoutWidget</zorder>
+   <zorder>layoutWidget</zorder>
+   <zorder>layoutWidget</zorder>
+   <zorder>layoutWidget</zorder>
+   <zorder>Zoom_PB</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

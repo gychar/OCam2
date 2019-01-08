@@ -29,7 +29,6 @@ SOURCES += \
         main.cpp \
         ocam2_sdk.c \
         mainwindow.cpp \
-    maths.cpp \
     dialog_histogram.cpp \
     g_param.cpp \
     qcustomplot.cpp \

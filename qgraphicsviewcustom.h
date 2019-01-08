@@ -10,6 +10,7 @@
 #include <QDebug>
 #include "qgraphicsitemcustom.h"
 #include <QGraphicsItem>
+#include "maths.h"
 
 class QGraphicsViewCustom : public QGraphicsView
 {
@@ -23,6 +24,8 @@ public:
     unsigned int y2 = 0;
     static QGraphicsItemCustom *item;
     double GetMean(vector<short> img, unsigned int x1, unsigned int y1, unsigned int x2, unsigned y2);
+    double GetMedian(vector<short> img, unsigned int x1, unsigned int y1, unsigned int x2, unsigned y2);
+    double GetSD(vector<short> img, unsigned int x1, unsigned int y1, unsigned int x2, unsigned y2);
 
 protected:
     void mouseMoveEvent(QMouseEvent *event);

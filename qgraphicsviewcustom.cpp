@@ -30,6 +30,52 @@ double QGraphicsViewCustom::GetMean(vector<short> img, unsigned int a, unsigned 
     return ret;
 }
 
+double QGraphicsViewCustom::GetMedian(vector<short> img, unsigned int a, unsigned int b, unsigned int c, unsigned d)
+{
+    unsigned int xx1 = (a < c) ? a : c;
+    unsigned int yy1 = (b < d) ? b : d;
+    unsigned int xx2 = (xx1 == a) ? c : a;
+    unsigned int yy2 = (yy1 == b) ? d : b;
+    unsigned int size = (xx2-xx1)*(yy2-yy1);
+    cout << dec << size << " pixels ";
+    int length = 0;
+    vector<double> rect;
+    for(unsigned int j = 0; j < yy2-yy1; j++){
+        for(unsigned int i = 0; i < xx2-xx1; i++){
+            length = g_zoom_full ? g_imgsize : g_mask_x;
+            rect.push_back(img[xx1+i+(yy1+j)*length]);
+        }
+    }
+    double ret = g_maths.Median(rect);
+    g_zoom_median = ret;
+    g_zoom_median_done = true;
+    cout << "median = " << ret << endl;
+    return ret;
+}
+
+double QGraphicsViewCustom::GetSD(vector<short> img, unsigned int a, unsigned int b, unsigned int c, unsigned d)
+{
+    unsigned int xx1 = (a < c) ? a : c;
+    unsigned int yy1 = (b < d) ? b : d;
+    unsigned int xx2 = (xx1 == a) ? c : a;
+    unsigned int yy2 = (yy1 == b) ? d : b;
+    unsigned int size = (xx2-xx1)*(yy2-yy1);
+    cout << dec << size << " pixels ";
+    int length = 0;
+    vector<double> rect;
+    for(unsigned int j = 0; j < yy2-yy1; j++){
+        for(unsigned int i = 0; i < xx2-xx1; i++){
+            length = g_zoom_full ? g_imgsize : g_mask_x;
+            rect.push_back(img[xx1+i+(yy1+j)*length]);
+        }
+    }
+    double ret = g_maths.StandardDeviation(rect);
+    g_zoom_sd = ret;
+    g_zoom_sd_done = true;
+    cout << "sd = " << ret << endl;
+    return ret;
+}
+
 void QGraphicsViewCustom::mouseMoveEvent(QMouseEvent *event){
     this->setCursor(Qt::CrossCursor);
     x = unsigned(event->x()/4);
@@ -55,5 +101,7 @@ void QGraphicsViewCustom::mouseReleaseEvent(QMouseEvent *event)
     item = new QGraphicsItemCustom(x1,y1,x2,y2);
     this->scene()->addItem(item);
     GetMean(g_zoom_full? g_imgNormal_vector : g_register_zoom_vector, x1/4,y1/4,x2/4,y2/4);
+    GetMedian(g_zoom_full? g_imgNormal_vector : g_register_zoom_vector, x1/4,y1/4,x2/4,y2/4);
+    GetSD(g_zoom_full? g_imgNormal_vector : g_register_zoom_vector, x1/4,y1/4,x2/4,y2/4);
     cout << dec << "release : x = " << x2/4 << " y = " << y2/4 << endl;
 }

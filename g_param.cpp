@@ -62,6 +62,8 @@ bool g_addGaussianNoise_state = false;
 bool g_surface_end = false;
 bool g_zoom_full = false;
 bool g_zoom_mean_done = false;
+bool g_zoom_median_done = false;
+bool g_zoom_sd_done = false;
 bool g_load_correction = false;
 bool g_zoom_show = false;
 
@@ -105,7 +107,8 @@ int g_zoom_id_register = 0;
 unsigned int g_zoom_x = 0;
 unsigned int g_zoom_y = 0;
 double g_zoom_mean = 0.0;
-
+double g_zoom_median = 0.0;
+double g_zoom_sd = 0.0;
 
 // NOISE
 float g_Sigma2Read = 0;

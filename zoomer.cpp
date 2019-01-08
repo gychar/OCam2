@@ -9,7 +9,7 @@ Zoomer::Zoomer(QWidget *parent) :
     ui->setupUi(this);
 
     qApp->installEventFilter(this);
-    this->setFixedSize(242,522);
+    this->setFixedSize(242,542);
     this->setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
     display();
     ui->graphicsView->setMouseTracking(true);
@@ -34,12 +34,12 @@ void Zoomer::display(){
 void Zoomer::on_checkBox_toggled(bool checked)
 {
     if(checked){
-        this->setFixedSize(962,1002);
+        this->setFixedSize(962,1022);
         ui->graphicsView->setMinimumHeight(962);
         ui->graphicsView->setMinimumWidth(962);
         g_zoom_full = true;
     }else{
-        this->setFixedSize(242,522);
+        this->setFixedSize(242,542);
         ui->graphicsView->setMaximumHeight(482);
         ui->graphicsView->setMaximumWidth(242);
         g_zoom_full = false;
@@ -69,6 +69,12 @@ bool Zoomer::eventFilter(QObject *obj, QEvent *event)
     }
     if(g_zoom_mean_done){
         ui->mean_label->setText("mean: "+QString::number(g_zoom_mean));
+    }
+    if(g_zoom_median_done){
+        ui->median_label->setText("median: "+QString::number(g_zoom_median));
+    }
+    if(g_zoom_sd_done){
+        ui->sd_label->setText("sd: "+QString::number(g_zoom_sd));
     }
 
     return false;
