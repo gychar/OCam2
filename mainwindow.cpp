@@ -746,6 +746,37 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     }
 }
 
+// For 4k display, sampling
+vector<short> MainWindow::Sampling4k(const vector<short> img)
+{
+    vector<short> ret;
+    for(int i = 0; i < 16777216; i++){
+        int x = i % 4096;
+        int y = i / 4096;
+        if(x % 16 == 0 && y % 16 == 0){
+            ret.push_back(img[i]);
+        }
+    }
+    return ret;
+}
+
+// For 4k display, mega pixel
+vector<short> MainWindow::MegaPixel4k(const vector<short> img)
+{
+    vector<short> ret;
+    vector<short> mp[65536];
+    for(int i = 0; i < 16777216; i++){
+        int x = i % 4096;
+        int y = i / 4096;
+        int index = (x / 16) + ((y % 16) * 256);
+        mp[index].push_back(img[i]);
+    }
+    for(int i = 0; i < 65536; i++){
+        ret.push_back(g_maths.Mean(mp[i]));
+    }
+    return ret;
+}
+
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     if (event->type() == QEvent::MouseMove)
@@ -1305,6 +1336,7 @@ void MainWindow::on_Run_PB_clicked(bool checked)
     if(checked==true){
         g_run_state = true;
         ui->Run_PB->setText("Stop");
+        ui->BufferAcquire_PB->setEnabled(false);
         cout << "Acquiring..." << endl;
         while(g_run_state == true){
             AcquireImages();
@@ -1317,6 +1349,7 @@ void MainWindow::on_Run_PB_clicked(bool checked)
     }
     if(checked == false){
         ui->Run_PB->setText("Run");
+        ui->BufferAcquire_PB->setEnabled(true);
         g_run_state = false;
         cout << "Stopped..." << endl;
     }
