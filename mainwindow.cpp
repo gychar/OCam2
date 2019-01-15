@@ -88,9 +88,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    timer = new QTimer(this);
-    connect(timer,SIGNAL(timeout()),this,SLOT(onTimeOut()));
-    timer->start(1000);
+    Mode_win = new Select_Mode;
+    Mode_win->show();
+    connect(Mode_win,SIGNAL(Selected()),this,SLOT(Mode_selected()));
+
     qApp->installEventFilter(this);
     ui->tabWidget->setCurrentIndex(0);
     g_image = new QImage();
@@ -99,13 +100,31 @@ MainWindow::MainWindow(QWidget *parent) :
     g_scene2 = new QGraphicsScene;
     g_scene_zoom = new QGraphicsScene;
     g_qtimeObj = new QTime;
+
     Init_Driver();
+//    InitializeMultiCam();
+//    Ocam_Init();
+//    SerialInit();
+//    InitBigImageBuffer();
+    g_BP = 0;
+    g_WP = 16383;
+
+}
+
+// Slot function
+void MainWindow::Mode_selected()
+{
+    timer = new QTimer(this);
+    connect(timer,SIGNAL(timeout()),this,SLOT(onTimeOut()));
+    timer->start(1000);
     InitializeMultiCam();
     Ocam_Init();
     SerialInit();
     InitBigImageBuffer();
-    g_BP = 0;
-    g_WP = 16383;
+    this->hide();
+    this->show();
+    cout << "ok" << endl;
+
 }
 
 // Destructor
@@ -154,34 +173,79 @@ void MainWindow::McCallback(PMCCALLBACKINFO CallBackInfo){
     {
         hSurface = static_cast<MCHANDLE>(CallBackInfo->SignalInfo);
         McGetParamPtr(hSurface,MC_SurfaceAddr,(PVOID*)&pImage);
+        cout << "image ok" << endl;
         // Stock current frame
         if(g_callback_mode == 0){
-            // Merge two 8-bit char to a 16-bit short
-            for(int j = 0; j < OCAM2_PIXELS_RAW_NORMAL; j++){
-                g_imageRawNormal[j] = (static_cast<short>(*(pImage+j*2+1)<<8)) | *(pImage+j*2);
-            }
-            ocam2_descramble(g_id, &g_number, g_imageNormal, g_imageRawNormal);
-            // Convert to 14 bits data
-            for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
-                g_surfacebuffer_short[g_surfacebuffercount][i] = g_imageNormal[i] & 0x3fff;
-            }
-            if(g_surfacebuffercount < g_buffersize - 1){
-                g_surfacebuffercount++;
+            if(!g_test4K){
+                // Merge two 8-bit char to a 16-bit short
+                for(int j = 0; j < OCAM2_PIXELS_RAW_NORMAL; j++){
+                    g_imageRawNormal[j] = (static_cast<short>(*(pImage+j*2+1)<<8)) | *(pImage+j*2);
+                }
+                ocam2_descramble(g_id, &g_number, g_imageNormal, g_imageRawNormal);
+                // Convert to 14 bits data
+                for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
+                    g_surfacebuffer_short[g_surfacebuffercount][i] = g_imageNormal[i] & 0x3fff;
+                }
+                if(g_surfacebuffercount < g_buffersize - 1){
+                    g_surfacebuffercount++;
+                }else{
+                    g_surface_end = true;
+                    McSetParamInt(g_hChannel, MC_ChannelState, MC_ChannelState_IDLE);
+                }
             }else{
-                g_surface_end = true;
-                McSetParamInt(g_hChannel, MC_ChannelState, MC_ChannelState_IDLE);
+                // Merge two 8-bit char to a 16-bit short
+                for(int j = 0; j < PIXEL_4K; j++){
+                    g_image4K[j] = (static_cast<short>(*(pImage+j*2+1)<<8)) | *(pImage+j*2);
+                }
+                // Convert to 14 bits data
+                for(int i = 0; i < PIXEL_4K; i++){
+                    g_surfacebuffer_short[g_surfacebuffercount][i] = g_image4K[i] & 0x3fff;
+                }
+                if(g_surfacebuffercount < g_buffersize - 1){
+                    g_surfacebuffercount++;
+                }else{
+                    g_surface_end = true;
+                    McSetParamInt(g_hChannel, MC_ChannelState, MC_ChannelState_IDLE);
+                }
             }
         }
         // display current frame
         else if(g_callback_mode == 1){
-            unsigned char buffer[g_sizeX*g_sizeY];
-            // Copy memory to char array
-            for(int i = 0;i<g_sizeX*g_sizeY;i++){
-                buffer[i] = (*(pImage+i));
-            }
-            // Merge two 8-bit char to a 16-bit short
-            for(int i = 0;i<OCAM2_PIXELS_RAW_NORMAL;i++){
-                g_imageRawNormal[i] = (static_cast<short>((buffer[i*2+1])<<8)) |(buffer[i*2]);
+            if(!g_test4K){
+                unsigned char buffer[g_sizeX*g_sizeY];
+                // Copy memory to char array
+                for(int i = 0;i<g_sizeX*g_sizeY;i++){
+                    buffer[i] = (*(pImage+i));
+                }
+                // Merge two 8-bit char to a 16-bit short
+                for(int i = 0;i<OCAM2_PIXELS_RAW_NORMAL;i++){
+                    g_imageRawNormal[i] = (static_cast<short>((buffer[i*2+1])<<8)) |(buffer[i*2]);
+                }
+            }else{
+//                cout << "size x " <<g_sizeX << " size y " << g_sizeY << endl;
+//                unsigned char buffer[g_sizeX*g_sizeY];
+//                // Copy memory to char array
+//                for(int i = 0;i<g_sizeX*g_sizeY;i++){
+//                    buffer[i] = (*(pImage+i));
+//                }
+//                // Merge two 8-bit char to a 16-bit short
+//                for(int i = 0;i<PIXEL_4K;i++){
+//                    g_image4K[i] = (static_cast<short>((buffer[i*2+1])<<8)) |(buffer[i*2]);
+//                }
+//                cout << "size x " <<g_sizeX << " size y " << g_sizeY << endl;
+                g_status= McGetParamInt(g_hChannel, MC_ImageSizeX, &g_sizeX);
+                g_status= McGetParamInt(g_hChannel, MC_ImageSizeY, &g_sizeY);
+                int temp = g_sizeX*g_sizeY;
+                unsigned char buffer[g_sizeX*g_sizeY];
+                // Copy memory to char array
+                for(int i = 0;i<g_sizeX*g_sizeY;i++){
+                    buffer[i] = (*(pImage+i));
+                }
+                cout << "read memory ok" << endl;
+                // Merge two 8-bit char to a 16-bit short
+                for(int i = 0;i<PIXEL_4K;i++){
+                    g_image4K[i] = (static_cast<short>((buffer[i*2+1])<<8)) |(buffer[i*2]);
+                }
             }
             //            McSetParamInt(g_hChannel, MC_ChannelState, MC_ChannelState_IDLE);
         }
@@ -268,7 +332,13 @@ int MainWindow::InitializeMultiCam(){
     }
 
     // Choose the CAM file
-    g_status = McSetParamStr(g_hChannel,MC_CamFile,"/home/gcai/LAM/Qt/Ocam/MCL");
+    if(!g_test4K){
+        g_status = McSetParamStr(g_hChannel,MC_CamFile,"/home/gcai/LAM/Qt/Ocam/MCL");
+        cout << "cam ocam2" << endl;
+    }else{
+        g_status = McSetParamStr(g_hChannel,MC_CamFile,"/home/gcai/LAM/Qt/Ocam/MCL4K");
+        cout << "cam 4K" << endl;
+    }
     if(g_status != MC_OK){
         test_error();
         return -1;
@@ -292,6 +362,8 @@ int MainWindow::InitializeMultiCam(){
         test_error();
         return -1;
     }
+    cout << "size x " <<g_sizeX << " size y " << g_sizeY << endl;
+
     // Register our Callback function for the MultiCam asynchronous signals.
     g_status = McRegisterCallback(g_hChannel, McCallback, nullptr);
     if(g_status != MC_OK){
@@ -312,11 +384,11 @@ int MainWindow::InitializeMultiCam(){
         test_error();
         return -1;
     }
-    //    g_status = McSetParamInt(g_hChannel, MC_SignalEnable + MC_SIG_SURFACE_FILLED, MC_SignalEnable_ON);
-    //    if(g_status != MC_OK){
-    //        test_error();
-    //        return -1;
-    //    }
+//    g_status = McSetParamInt(g_hChannel, MC_SignalEnable + MC_SIG_SURFACE_FILLED, MC_SignalEnable_ON);
+//    if(g_status != MC_OK){
+//        test_error();
+//        return -1;
+//    }
 
     return 0;
 }
@@ -482,8 +554,58 @@ void MainWindow::AcquireImages()
     g_num++;
 }
 
+void MainWindow::AcquireImages4K()
+{
+    cout << "Acqui function" << endl;
+    g_callback_mode = 1;
+    // Start Acquisitions for this channel.
+    g_status = McSetParamInt(g_hChannel, MC_ChannelState, MC_ChannelState_ACTIVE);
+    if(g_status != MC_OK){
+        test_error();
+    }
+
+//    // Convert to 14 bits data
+//    for(int i = 0; i < PIXEL_4K; i++){
+//        //        cout << i << "   " << g_imageNormal[i] << endl;
+//        g_image4K[i] = g_image4K[i] & 0x3fff;
+//        //        cout << i << "   " << g_imageNormal[i] << endl;
+//    }
+//    // Copy to vector
+//    for(int i = 0; i < PIXEL_4K; i++){
+//        g_img4K_vector[i] = g_image4K[i];
+//    }
+//    // g_imageNormal8bits 8-bits
+//    pixel_correction_4K(g_imageNormal,g_imageNormal8bits);
+//    ui->Thresh_Label->setText(QString::number(g_threshvalue) + " % after thresh = " + QString::number(g_afterthresh));
+//    g_num++;
+}
+
 // Display Image Function, images are 8-bits.
 void MainWindow::display(const short imagebuffer[]){
+    *g_image = QImage(240,240,QImage::Format_RGB888);
+    for (int pos=0,i=0; i < OCAM2_PIXELS_IMAGE_NORMAL; pos+=3,i++)
+    {
+        unsigned char PixRed=0, PixGreen=0, PixBlue=0;
+        short RawPixel= imagebuffer[i];
+        if (RawPixel >= 0xFF) //if pixel is above White point
+            PixRed= PixGreen= PixBlue= 0xFF;//8 bit value is 255
+        else if (RawPixel <= 0)//if below Black
+            PixRed= PixGreen= PixBlue = 0;//value is 0
+        else{
+            PixRed= PixGreen= PixBlue= static_cast<unsigned char>(static_cast<int>(RawPixel));
+        }
+        g_image->bits()[pos] = PixRed;
+        g_image->bits()[pos+1] = PixGreen;
+        g_image->bits()[pos+2] = PixBlue;
+    }
+    g_scene->clear();
+    g_scene->addPixmap(QPixmap::fromImage(*g_image));
+    ui->graphicsView->setScene(g_scene);
+    ui->graphicsView->show();
+}
+
+void MainWindow::display_4K(const short imagebuffer[])
+{
     *g_image = QImage(240,240,QImage::Format_RGB888);
     for (int pos=0,i=0; i < OCAM2_PIXELS_IMAGE_NORMAL; pos+=3,i++)
     {
@@ -534,6 +656,22 @@ void MainWindow::threshold_function(short thresh){
 // Adjust pixel value to 8-bits
 void MainWindow::pixel_correction(short img1[], short img2[]){
     for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
+        // Inverse 2 bit
+        int temp = img1[i];
+        temp = ((temp-(int)g_BP)*255);
+        temp = temp/((int)g_WP-(int)g_BP);
+        if(temp < 0)
+            img2[i] = 0;
+        else if(temp > 255)
+            img2[i] = 255;
+        else
+            img2[i] = static_cast<short>(temp);
+    }
+}
+
+void MainWindow::pixel_correction_4K(short img1[], short img2[])
+{
+    for(int i = 0; i < PIXEL_4K; i++){
         // Inverse 2 bit
         int temp = img1[i];
         temp = ((temp-(int)g_BP)*255);
@@ -1320,9 +1458,14 @@ void MainWindow::on_Load_Bias_PB_clicked()
 // Snap Shot Button
 void MainWindow::on_Snap_shot_PB_clicked()
 {
-    AcquireImages();
-    display(g_imageNormal8bits);
-    ZoomImage();
+    if(!g_test4K){
+        AcquireImages();
+        display(g_imageNormal8bits);
+        ZoomImage();
+    }else{
+        cout << "Acquire 4K snap shot" << endl;
+        AcquireImages4K();
+    }
     cout << "Snap shot finish" << endl;
     QString imagenum = QString::number(g_num-1) + ".dat";
     ui->ImageName_Label->setText(imagenum);
@@ -1734,7 +1877,11 @@ void MainWindow::on_BufferAllocate_PB_clicked()
         g_surfacebuffer_short = new short *[g_buffersize];
         for(int i = 0; i < g_buffersize; i++){
             //            g_surfacebuffer[i] = new unsigned char[g_sizeX*g_sizeY];
-            g_surfacebuffer_short[i] = new short[OCAM2_PIXELS_IMAGE_NORMAL];
+            if(!g_test4K){
+                g_surfacebuffer_short[i] = new short[OCAM2_PIXELS_IMAGE_NORMAL];
+            }else{
+                g_surfacebuffer_short[i] = new short[PIXEL_4K];
+            }
         }
         int t = g_qtimeObj->elapsed();
         qDebug() << "Time used: " << t/1000.0 << "s";
@@ -3372,6 +3519,28 @@ void MainWindow::on_GaussianNoise_CheckBox_stateChanged(int arg1)
     }
 }
 
+void MainWindow::on_Test4K_RB_clicked(bool checked)
+{
+    if(checked){
+        g_test4K = true;
+        g_status = McSetParamStr(g_hChannel,MC_CamFile,"/home/gcai/LAM/Qt/Ocam/MCL4K");
+        // Retrieve channel size information.
+        g_status= McGetParamInt(g_hChannel, MC_ImageSizeX, &g_sizeX);
+        g_status= McGetParamInt(g_hChannel, MC_ImageSizeY, &g_sizeY);
+        g_status= McGetParamInt(g_hChannel, MC_BufferPitch, &g_pitch);
+        cout << g_sizeX << " " << g_sizeY << endl;
+        cout << "4K" << endl;
+    }else{
+        g_test4K = false;
+        g_status = McSetParamStr(g_hChannel,MC_CamFile,"/home/gcai/LAM/Qt/Ocam/MCL");
+        // Retrieve channel size information.
+        g_status= McGetParamInt(g_hChannel, MC_ImageSizeX, &g_sizeX);
+        g_status= McGetParamInt(g_hChannel, MC_ImageSizeY, &g_sizeY);
+        g_status= McGetParamInt(g_hChannel, MC_BufferPitch, &g_pitch);
+        cout << g_sizeX << " " << g_sizeY << endl;
+        cout << "4K end" << endl;
+    }
+}
 /*================= QT GUI FUNCTIONS END ======================================*/
 
 /*================= OTHER FUNCTION START ======================================*/
@@ -3409,9 +3578,6 @@ int get_y(int in){
 }
 
 /*================= OTHER FUNCTION END ======================================*/
-
-
-
 
 
 

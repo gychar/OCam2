@@ -35,7 +35,8 @@ SOURCES += \
     dialog_stats.cpp \
     zoomer.cpp \
     qgraphicsviewcustom.cpp \
-    qgraphicsitemcustom.cpp
+    qgraphicsitemcustom.cpp \
+    select_mode.cpp
 
 HEADERS += \
     ocam2_sdk.h \
@@ -50,13 +51,15 @@ HEADERS += \
     dialog_stats.h \
     zoomer.h \
     qgraphicsviewcustom.h \
-    qgraphicsitemcustom.h
+    qgraphicsitemcustom.h \
+    select_mode.h
 
 FORMS += \
     mainwindow.ui \
     dialog_histogram.ui \
     dialog_stats.ui \
-    zoomer.ui
+    zoomer.ui \
+    select_mode.ui
 
 PKGCONFIG += git
 new_moc.

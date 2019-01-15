@@ -18,6 +18,9 @@ extern const int g_imgsize;
 extern const int g_mask_pixel;
 extern const int g_nb_cycle;
 extern const int g_statistics_try;
+extern const int LENGTH_4K;
+extern const int HEIGHT_4K;
+extern const int PIXEL_4K;
 
 
 // IMAGE BUFFER
@@ -36,6 +39,8 @@ extern unsigned int g_buffersize;
 extern vector<short> g_register_zoom_8bits;
 extern vector<short> g_register_zoom_vector;
 extern vector<short> g_imgNormal_vector;
+extern vector<short> g_img4K_vector;
+extern short g_image4K[8448*2055];
 
 // QT CLASS
 extern QImage *g_image;
@@ -76,7 +81,8 @@ extern bool g_zoom_median_done;
 extern bool g_zoom_sd_done;
 extern bool g_load_correction;
 extern bool g_zoom_show;
-
+extern bool g_test4K;
+extern bool g_select_done;
 
 // PARAMETERS
 extern int g_BP;

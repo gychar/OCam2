@@ -43,6 +43,7 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "zoomer.h"
+#include "select_mode.h"
 
 using namespace std;
 using namespace cv;
@@ -64,8 +65,12 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     Zoomer *Zoomer_win;
+    Select_Mode *Mode_win;
     QTimer *timer;
     bool eventFilter(QObject *obj, QEvent *ev);
+
+public slots:
+    void Mode_selected();
 
 private slots:
     void on_Snap_shot_PB_clicked();
@@ -180,6 +185,8 @@ private slots:
 
     void on_Temp_off_PB_clicked();
 
+    void on_Test4K_RB_clicked(bool checked);
+
 private:
     Ui::MainWindow *ui;
 
@@ -191,9 +198,12 @@ private:
     static void McCallback(PMCCALLBACKINFO CallBackInfo);
     static void *SignalHandler ( void * Param);
     void AcquireImages();
+    void AcquireImages4K();
     void display(const short imagebuffer[]);
+    void display_4K(const short imagebuffer[]);
     void Ocam_Init();
     void pixel_correction(short img1[], short img2[]);
+    void pixel_correction_4K(short img1[], short img2[]);
     void threshold_function(short thresh);
     void InitBigImageBuffer();
     void SerialInit();
@@ -204,6 +214,8 @@ private:
     void GetTime();
     void ZoomImage();
     void mousePressEvent(QMouseEvent *event);
+    vector<short> Sampling4k(const vector<short> img);
+    vector<short> MegaPixel4k(const vector<short> img);
 };
 
 #endif // MAINWINDOW_H

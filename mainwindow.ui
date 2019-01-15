@@ -484,7 +484,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="usesScrollButtons">
      <bool>true</bool>
@@ -902,6 +902,19 @@
       </property>
       <property name="text">
        <string>Dark Image</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="Test4K_RB">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>190</y>
+        <width>112</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Test 4K</string>
       </property>
      </widget>
     </widget>

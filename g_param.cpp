@@ -8,7 +8,9 @@ const int g_imgsize = 240;
 const int g_mask_pixel = g_mask_x*g_mask_y;
 const int g_nb_cycle = 32;
 const int g_statistics_try = 10;
-
+const int LENGTH_4K = 8448;
+const int HEIGHT_4K = 2055;
+const int PIXEL_4K = LENGTH_4K*HEIGHT_4K;
 
 // IMAGE BUFFER
 short g_imageRawNormal[OCAM2_PIXELS_RAW_NORMAL] = {0};
@@ -26,6 +28,8 @@ unsigned int g_buffersize;
 vector<short> g_register_zoom_8bits(g_mask_pixel,0);
 vector<short> g_register_zoom_vector(g_mask_pixel,0);;
 vector<short> g_imgNormal_vector(OCAM2_PIXELS_IMAGE_NORMAL,0);
+vector<short> g_img4K_vector(PIXEL_4K,0);
+short g_image4K[8448*2055] = {0};
 
 // QT CLASS
 QImage *g_image;
@@ -66,6 +70,8 @@ bool g_zoom_median_done = false;
 bool g_zoom_sd_done = false;
 bool g_load_correction = false;
 bool g_zoom_show = false;
+bool g_test4K = false;
+bool g_select_done = false;
 
 
 // PARAMETERS
