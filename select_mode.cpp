@@ -17,7 +17,6 @@ Select_Mode::~Select_Mode()
 void Select_Mode::on_OCam2_PB_clicked()
 {
     g_test4K = false;
-    cout << "ocam2" << endl;
     emit Selected();
     this->close();
 }
@@ -25,7 +24,6 @@ void Select_Mode::on_OCam2_PB_clicked()
 void Select_Mode::on_Simu4K_PB_clicked()
 {
     g_test4K = true;
-    cout << "4K" << endl;
     emit Selected();
     this->close();
 }

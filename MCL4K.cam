@@ -31,12 +31,13 @@
 ;
 ; -Camera Features category-
     TapConfiguration =  FULL_8T8;           <== BASE_1T8 BASE_1T10 BASE_1T24 ...
-    TapGeometry =       1X8_1Y;              <== 1X_1Y 1X2_1Y 2X_1Y ...              
+;   TapGeometry =       8X_1Y;              
+    TapGeometry =       1X8_1Y;            
     Expose =            INTCTL;
     Readout =           INTCTL;
     ColorMethod =       NONE;               <== NONE PRISM BAYER RGB
     ColorRegistration = BG;                 <== GB BG RG GR (when ColorMethod=BAYER)
-    ExposeOverlap =     FORBID;             <== FORBID ALLOW
+    ExposeOverlap =     ALLOW;             <== FORBID ALLOW
 ;
 ; --Downstream signals--
     FvalMode =          FA;
@@ -50,7 +51,7 @@
     CC4Usage =          LOW;                <== LOW HIGH SOFT
 ;
 ; -Camera Timing category-
-    Hactive_Px =        8448;                <==
+    Hactive_Px =        16896;                <==
     Vactive_Ln =        2055;                <==
     HSyncAft_Tk =       0;                  <==
     VSyncAft_Ln =       0;                  <==
@@ -76,8 +77,6 @@
 ;       If the default value is not adequate for your application, it is then necessary to edit the value and
 ;       to remove the leading semi-column of one of the following 3 lines
    TrigCtl =           ISO;                <== Full/DualBase/Base: ISO DIFF
-;   TrigCtl =           TTL;                <== Avenue/Express: TTL ITTL I12V LVDS
-;   TrigCtl =           TTL;                <== Value: TTL ITTL I12V
    TrigEdge =          GOHIGH;             <== GOHIGH GOLOW
    TrigFilter =        MEDIUM;             <== OFF ON MEDIUM STRONG
    TrigDelay_us =      0;                  <==
@@ -99,10 +98,10 @@
 ; -Grabber Configuration, Timing & Conditioning categories-
     GrabWindow =        NOBLACK;            <== NOBLACK MAN ...
 ;       The following 4 parameters are relevant only when GrabWindow = MAN:
-    WindowX_Px =        8448;                <==
-    WindowY_Ln =        2055;                <==
-    OffsetX_Px =        0;                  <==
-    OffsetY_Ln =        0;                  <==
+;    WindowX_Px =        8448;                <==
+;    WindowY_Ln =        2055;                <==
+;    OffsetX_Px =        0;                  <==
+;    OffsetY_Ln =        0;                  <==
 ;       The following parameter is available exclusively on Grablink Full/DualBase/Base boards.
 ;       It configures the Bayer CFA Decoder. If the default value is not adequate for your application,
 ;       it is then necessary to edit the value and to remove the leading semi-column of the following line:

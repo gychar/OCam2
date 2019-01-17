@@ -200,7 +200,7 @@ private:
     void AcquireImages();
     void AcquireImages4K();
     void display(const short imagebuffer[]);
-    void display_4K(const short imagebuffer[]);
+    void display_4K(const vector<short> imagebuffer);
     void Ocam_Init();
     void pixel_correction(short img1[], short img2[]);
     void pixel_correction_4K(short img1[], short img2[]);
@@ -216,6 +216,9 @@ private:
     void mousePressEvent(QMouseEvent *event);
     vector<short> Sampling4k(const vector<short> img);
     vector<short> MegaPixel4k(const vector<short> img);
+    vector<vector <short>> SplitReg(const vector<short> img);
+    vector<vector <short>> Supp_OverScan(const vector<vector <short>> img);
+    vector<short> Combine_Reg_4K(const vector<vector <short>> img);
 };
 
 #endif // MAINWINDOW_H

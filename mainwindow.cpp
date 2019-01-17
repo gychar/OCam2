@@ -167,13 +167,17 @@ void MainWindow::on_Test_PB_clicked()
 // GrabLink Driver Callback Function
 void MainWindow::McCallback(PMCCALLBACKINFO CallBackInfo){
     MCHANDLE hSurface;
+//    BYTE *pImage = (BYTE *)malloc(sizeof(BYTE)*(PIXEL_4K));
     BYTE *pImage;
     switch(CallBackInfo->Signal){
     case MC_SIG_SURFACE_PROCESSING:
     {
         hSurface = static_cast<MCHANDLE>(CallBackInfo->SignalInfo);
         McGetParamPtr(hSurface,MC_SurfaceAddr,(PVOID*)&pImage);
-        cout << "image ok" << endl;
+//        for(int i = 0; i < 2*PIXEL_4K; i++){
+//            if(i < PIXEL_4K)
+//            cout << dec << i << "    " << hex << int(*(pImage+i)) << endl;
+//        }
         // Stock current frame
         if(g_callback_mode == 0){
             if(!g_test4K){
@@ -194,12 +198,13 @@ void MainWindow::McCallback(PMCCALLBACKINFO CallBackInfo){
                 }
             }else{
                 // Merge two 8-bit char to a 16-bit short
-                for(int j = 0; j < PIXEL_4K; j++){
-                    g_image4K[j] = (static_cast<short>(*(pImage+j*2+1)<<8)) | *(pImage+j*2);
+                for(int j = 0; j < PIXEL_4K_RAW; j++){
+                    g_img4Kraw_vector[j] = (static_cast<short>(*(pImage+j*2+1)<<8)) | *(pImage+j*2);
                 }
+                cout << "merge ok " << endl;
                 // Convert to 14 bits data
-                for(int i = 0; i < PIXEL_4K; i++){
-                    g_surfacebuffer_short[g_surfacebuffercount][i] = g_image4K[i] & 0x3fff;
+                for(int i = 0; i < PIXEL_4K_RAW; i++){
+                    g_surfacebuffer_short[g_surfacebuffercount][i] = g_img4Kraw_vector[i] & 0x3fff;
                 }
                 if(g_surfacebuffercount < g_buffersize - 1){
                     g_surfacebuffercount++;
@@ -221,33 +226,13 @@ void MainWindow::McCallback(PMCCALLBACKINFO CallBackInfo){
                 for(int i = 0;i<OCAM2_PIXELS_RAW_NORMAL;i++){
                     g_imageRawNormal[i] = (static_cast<short>((buffer[i*2+1])<<8)) |(buffer[i*2]);
                 }
+                cout << "merge ok" << endl;
             }else{
-//                cout << "size x " <<g_sizeX << " size y " << g_sizeY << endl;
-//                unsigned char buffer[g_sizeX*g_sizeY];
-//                // Copy memory to char array
-//                for(int i = 0;i<g_sizeX*g_sizeY;i++){
-//                    buffer[i] = (*(pImage+i));
-//                }
-//                // Merge two 8-bit char to a 16-bit short
-//                for(int i = 0;i<PIXEL_4K;i++){
-//                    g_image4K[i] = (static_cast<short>((buffer[i*2+1])<<8)) |(buffer[i*2]);
-//                }
-//                cout << "size x " <<g_sizeX << " size y " << g_sizeY << endl;
-                g_status= McGetParamInt(g_hChannel, MC_ImageSizeX, &g_sizeX);
-                g_status= McGetParamInt(g_hChannel, MC_ImageSizeY, &g_sizeY);
-                int temp = g_sizeX*g_sizeY;
-                unsigned char buffer[g_sizeX*g_sizeY];
-                // Copy memory to char array
-                for(int i = 0;i<g_sizeX*g_sizeY;i++){
-                    buffer[i] = (*(pImage+i));
-                }
-                cout << "read memory ok" << endl;
-                // Merge two 8-bit char to a 16-bit short
-                for(int i = 0;i<PIXEL_4K;i++){
-                    g_image4K[i] = (static_cast<short>((buffer[i*2+1])<<8)) |(buffer[i*2]);
+                for(int j = 0; j < g_sizeX*g_sizeY/2; j++){
+                    g_img4Kraw_vector[j] =  (static_cast<short>(*(pImage+j*2+1)<<8)) | *(pImage+j*2);
+                    g_img4Kraw_vector[j] = g_img4Kraw_vector[j] & 0x3fff;
                 }
             }
-            //            McSetParamInt(g_hChannel, MC_ChannelState, MC_ChannelState_IDLE);
         }
         break;
     }
@@ -334,10 +319,10 @@ int MainWindow::InitializeMultiCam(){
     // Choose the CAM file
     if(!g_test4K){
         g_status = McSetParamStr(g_hChannel,MC_CamFile,"/home/gcai/LAM/Qt/Ocam/MCL");
-        cout << "cam ocam2" << endl;
+        cout << "CAM File MCL selected." << endl;
     }else{
         g_status = McSetParamStr(g_hChannel,MC_CamFile,"/home/gcai/LAM/Qt/Ocam/MCL4K");
-        cout << "cam 4K" << endl;
+        cout << "CAM File MCL4K selected." << endl;
     }
     if(g_status != MC_OK){
         test_error();
@@ -362,7 +347,6 @@ int MainWindow::InitializeMultiCam(){
         test_error();
         return -1;
     }
-    cout << "size x " <<g_sizeX << " size y " << g_sizeY << endl;
 
     // Register our Callback function for the MultiCam asynchronous signals.
     g_status = McRegisterCallback(g_hChannel, McCallback, nullptr);
@@ -560,24 +544,22 @@ void MainWindow::AcquireImages4K()
     g_callback_mode = 1;
     // Start Acquisitions for this channel.
     g_status = McSetParamInt(g_hChannel, MC_ChannelState, MC_ChannelState_ACTIVE);
-    if(g_status != MC_OK){
-        test_error();
-    }
-
-//    // Convert to 14 bits data
-//    for(int i = 0; i < PIXEL_4K; i++){
-//        //        cout << i << "   " << g_imageNormal[i] << endl;
-//        g_image4K[i] = g_image4K[i] & 0x3fff;
-//        //        cout << i << "   " << g_imageNormal[i] << endl;
+//    for(int i = 0; i < PIXEL_4K_RAW/2;i++){
+//        if(i > 17000000)
+//        cout << dec << i << " ----" << g_img4Kraw_vector[i] << endl;
 //    }
-//    // Copy to vector
-//    for(int i = 0; i < PIXEL_4K; i++){
-//        g_img4K_vector[i] = g_image4K[i];
+    sleep(10);
+    vector<vector <short>> registers_4K = SplitReg(g_img4Kraw_vector);
+//    for(int i = 0; i < 1056*2055; i++){
+//        cout << dec << i << " --- " << registers_4K[0][i] << endl;
 //    }
-//    // g_imageNormal8bits 8-bits
-//    pixel_correction_4K(g_imageNormal,g_imageNormal8bits);
-//    ui->Thresh_Label->setText(QString::number(g_threshvalue) + " % after thresh = " + QString::number(g_afterthresh));
-//    g_num++;
+    vector<vector <short>> img_supp_os_4K = Supp_OverScan(registers_4K);
+    vector<short> img_4K = Combine_Reg_4K(img_supp_os_4K);
+    vector<short> img_4K_disp = Sampling4k(img_4K);
+//    for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
+//        cout << dec << i << " --- " << img_4K_disp[i] << endl;
+//    }
+    display_4K(img_4K_disp);
 }
 
 // Display Image Function, images are 8-bits.
@@ -604,7 +586,7 @@ void MainWindow::display(const short imagebuffer[]){
     ui->graphicsView->show();
 }
 
-void MainWindow::display_4K(const short imagebuffer[])
+void MainWindow::display_4K(const vector<short> imagebuffer)
 {
     *g_image = QImage(240,240,QImage::Format_RGB888);
     for (int pos=0,i=0; i < OCAM2_PIXELS_IMAGE_NORMAL; pos+=3,i++)
@@ -671,7 +653,7 @@ void MainWindow::pixel_correction(short img1[], short img2[]){
 
 void MainWindow::pixel_correction_4K(short img1[], short img2[])
 {
-    for(int i = 0; i < PIXEL_4K; i++){
+    for(int i = 0; i < PIXEL_4K_RAW; i++){
         // Inverse 2 bit
         int temp = img1[i];
         temp = ((temp-(int)g_BP)*255);
@@ -911,6 +893,53 @@ vector<short> MainWindow::MegaPixel4k(const vector<short> img)
     }
     for(int i = 0; i < 65536; i++){
         ret.push_back(g_maths.Mean(mp[i]));
+    }
+    return ret;
+}
+
+// Split registers
+vector<vector<short> > MainWindow::SplitReg(const vector<short> img)
+{
+    vector<vector <short>> ret(8,vector<short>(1056*2055,0));
+    for(int i = 0; i < PIXEL_4K_RAW/2; i++){
+        int x = i % 8448;
+        int y = i / 8448;
+        int reg = x / 1056;
+        ret[reg][x-reg*1056+1056*y] = img[i];
+//        cout << dec << i << " --- " << img[i] << " --- " << g_img4Kraw_vector[i] << endl;
+    }
+    return ret;
+}
+
+// Suppress overscan pixels for each register
+vector<vector<short> > MainWindow::Supp_OverScan(const vector<vector<short> > img)
+{
+    vector<vector <short>> ret(8,vector<short>(1024*2048,0));
+    for(int i = 0; i < 8; i++){
+        int k = 0;
+        for(int j = 0; j < 1056*2055; j++){
+            if(j > 7391 && (j % 1056) > 31 ){
+                ret[i][k] = img[i][j];
+                k++;
+            }
+        }
+    }
+    return ret;
+}
+
+// Combine 8 register to 4096*4096 image
+vector<short> MainWindow::Combine_Reg_4K(const vector<vector<short> > img)
+{
+    vector<short> ret(4096*4096,0);
+
+    for(int i = 0; i < 8; i++){
+        int offset_x = i % 4;
+        int offset_y = i / 4;
+        for(int j = 0; j < 1056*2048; j++){
+            int x = j % 1056;
+            int y = j / 1056;
+            ret[x + offset_x * 1056 + (y + offset_y * 2048) * 4096];
+        }
     }
     return ret;
 }
@@ -1465,6 +1494,7 @@ void MainWindow::on_Snap_shot_PB_clicked()
     }else{
         cout << "Acquire 4K snap shot" << endl;
         AcquireImages4K();
+//        display_4K(g_img4Kraw_vector);
     }
     cout << "Snap shot finish" << endl;
     QString imagenum = QString::number(g_num-1) + ".dat";
@@ -1880,7 +1910,7 @@ void MainWindow::on_BufferAllocate_PB_clicked()
             if(!g_test4K){
                 g_surfacebuffer_short[i] = new short[OCAM2_PIXELS_IMAGE_NORMAL];
             }else{
-                g_surfacebuffer_short[i] = new short[PIXEL_4K];
+                g_surfacebuffer_short[i] = new short[PIXEL_4K_RAW];
             }
         }
         int t = g_qtimeObj->elapsed();

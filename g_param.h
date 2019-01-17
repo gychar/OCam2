@@ -20,8 +20,8 @@ extern const int g_nb_cycle;
 extern const int g_statistics_try;
 extern const int LENGTH_4K;
 extern const int HEIGHT_4K;
+extern const int PIXEL_4K_RAW;
 extern const int PIXEL_4K;
-
 
 // IMAGE BUFFER
 extern short g_imageRawNormal[OCAM2_PIXELS_RAW_NORMAL];
@@ -39,8 +39,7 @@ extern unsigned int g_buffersize;
 extern vector<short> g_register_zoom_8bits;
 extern vector<short> g_register_zoom_vector;
 extern vector<short> g_imgNormal_vector;
-extern vector<short> g_img4K_vector;
-extern short g_image4K[8448*2055];
+extern vector<short> g_img4Kraw_vector;
 
 // QT CLASS
 extern QImage *g_image;
