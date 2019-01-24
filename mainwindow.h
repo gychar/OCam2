@@ -69,8 +69,12 @@ public:
     QTimer *timer;
     bool eventFilter(QObject *obj, QEvent *ev);
 
+signals:
+    void Acqui4K_done();
+
 public slots:
     void Mode_selected();
+    void Process4K();
 
 private slots:
     void on_Snap_shot_PB_clicked();
@@ -187,6 +191,8 @@ private slots:
 
     void on_Test4K_RB_clicked(bool checked);
 
+    void on_Display_4K_PB_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -200,10 +206,11 @@ private:
     void AcquireImages();
     void AcquireImages4K();
     void display(const short imagebuffer[]);
-    void display_4K(const vector<short> imagebuffer);
+    void display_4K(const vector<unsigned short> imagebuffer);
+    void display_4K_full(const vector<unsigned short> imagebuffer);
     void Ocam_Init();
     void pixel_correction(short img1[], short img2[]);
-    void pixel_correction_4K(short img1[], short img2[]);
+    void pixel_correction_4K(vector<short> img1, vector<short> img2);
     void threshold_function(short thresh);
     void InitBigImageBuffer();
     void SerialInit();
@@ -214,11 +221,14 @@ private:
     void GetTime();
     void ZoomImage();
     void mousePressEvent(QMouseEvent *event);
-    vector<short> Sampling4k(const vector<short> img);
-    vector<short> MegaPixel4k(const vector<short> img);
-    vector<vector <short>> SplitReg(const vector<short> img);
-    vector<vector <short>> Supp_OverScan(const vector<vector <short>> img);
-    vector<short> Combine_Reg_4K(const vector<vector <short>> img);
+    vector<unsigned short> Sampling4k(const vector<unsigned short> img);
+    vector<unsigned short> MegaPixel4k(const vector<unsigned short> img);
+    void SplitReg();
+    void Supp_OverScan();
+    void Combine_Reg_4K();
+    void test();
+    void test2();
+
 };
 
 #endif // MAINWINDOW_H

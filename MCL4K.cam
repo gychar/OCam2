@@ -31,8 +31,9 @@
 ;
 ; -Camera Features category-
     TapConfiguration =  FULL_8T8;           <== BASE_1T8 BASE_1T10 BASE_1T24 ...
-;   TapGeometry =       8X_1Y;              
-    TapGeometry =       1X8_1Y;            
+;    TapGeometry =       8X_1Y;              
+;    TapGeometry =       1X8_1Y;   
+    TapGeometry =       1X8_1Y;         
     Expose =            INTCTL;
     Readout =           INTCTL;
     ColorMethod =       NONE;               <== NONE PRISM BAYER RGB

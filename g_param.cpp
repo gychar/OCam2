@@ -29,7 +29,8 @@ unsigned int g_buffersize;
 vector<short> g_register_zoom_8bits(g_mask_pixel,0);
 vector<short> g_register_zoom_vector(g_mask_pixel,0);;
 vector<short> g_imgNormal_vector(OCAM2_PIXELS_IMAGE_NORMAL,0);
-vector<short> g_img4Kraw_vector(PIXEL_4K_RAW,0);
+vector<unsigned short> g_img4Kraw_vector(PIXEL_4K_RAW/2,0);
+vector<unsigned short> g_img4K_disp(OCAM2_PIXELS_IMAGE_NORMAL,0);
 
 // QT CLASS
 QImage *g_image;
@@ -72,6 +73,9 @@ bool g_load_correction = false;
 bool g_zoom_show = false;
 bool g_test4K = false;
 bool g_select_done = false;
+bool g_4kacqui = false;
+bool g_pre_acqui = true;
+
 
 
 // PARAMETERS
@@ -119,6 +123,10 @@ double g_zoom_sd = 0.0;
 // NOISE
 float g_Sigma2Read = 0;
 
+// TEST
+vector<vector <unsigned short>> g_registers_4K(8,vector<unsigned short>(1056*2055,0));
+vector<vector <unsigned short>> g_img_supp_os_4K(8,vector<unsigned short>(1024*2048,0));;
+vector<unsigned short> g_img_4K(4096*4096,0);;
 
 /*================= GLOBAL PARAMETERS DECLARATION END=====================*/
 

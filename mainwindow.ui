@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1283</width>
+    <width>1885</width>
     <height>652</height>
    </rect>
   </property>
@@ -1214,6 +1214,29 @@
      </widget>
     </widget>
    </widget>
+   <widget class="QPushButton" name="Display_4K_PB">
+    <property name="geometry">
+     <rect>
+      <x>910</x>
+      <y>160</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Display 4K</string>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="graphicsView_3">
+    <property name="geometry">
+     <rect>
+      <x>1250</x>
+      <y>30</y>
+      <width>600</width>
+      <height>600</height>
+     </rect>
+    </property>
+   </widget>
    <zorder>tabWidget</zorder>
    <zorder>graphicsView</zorder>
    <zorder>Exit_PB</zorder>
@@ -1222,6 +1245,8 @@
    <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
    <zorder>Zoom_PB</zorder>
+   <zorder>Display_4K_PB</zorder>
+   <zorder>graphicsView_3</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

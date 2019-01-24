@@ -39,7 +39,8 @@ extern unsigned int g_buffersize;
 extern vector<short> g_register_zoom_8bits;
 extern vector<short> g_register_zoom_vector;
 extern vector<short> g_imgNormal_vector;
-extern vector<short> g_img4Kraw_vector;
+extern vector<unsigned short> g_img4Kraw_vector;
+extern vector<unsigned short> g_img4K_disp;
 
 // QT CLASS
 extern QImage *g_image;
@@ -82,6 +83,8 @@ extern bool g_load_correction;
 extern bool g_zoom_show;
 extern bool g_test4K;
 extern bool g_select_done;
+extern bool g_4kacqui;
+extern bool g_pre_acqui;
 
 // PARAMETERS
 extern int g_BP;
@@ -129,6 +132,11 @@ extern double g_zoom_sd;
 
 // NOISE
 extern float g_Sigma2Read;
+
+// TEST
+extern vector<vector <unsigned short>> g_registers_4K;
+extern vector<vector <unsigned short>> g_img_supp_os_4K;
+extern vector<unsigned short> g_img_4K;
 
 /*================= GLOBAL PARAMETERS DECLARATION END=====================*/
 

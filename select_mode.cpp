@@ -7,6 +7,7 @@ Select_Mode::Select_Mode(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::WindowStaysOnTopHint);
+    ui->Simu4K_PB->setFocus();
 }
 
 Select_Mode::~Select_Mode()
