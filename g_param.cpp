@@ -31,13 +31,17 @@ vector<short> g_register_zoom_vector(g_mask_pixel,0);;
 vector<short> g_imgNormal_vector(OCAM2_PIXELS_IMAGE_NORMAL,0);
 vector<unsigned short> g_img4Kraw_vector(PIXEL_4K_RAW/2,0);
 vector<unsigned short> g_img4K_disp(OCAM2_PIXELS_IMAGE_NORMAL,0);
+vector<unsigned short> g_img4K(8448*2055,0);
+
 
 // QT CLASS
 QImage *g_image;
+QImage *g_image4K;
 QImage *g_zoom_image;
 QGraphicsScene *g_scene;
 QGraphicsScene *g_scene2;
 QGraphicsScene *g_scene_zoom;
+QGraphicsScene *g_scene_4k;
 QTime *g_qtimeObj;
 
 // OCAM II
@@ -75,8 +79,9 @@ bool g_test4K = false;
 bool g_select_done = false;
 bool g_4kacqui = false;
 bool g_pre_acqui = true;
-
-
+bool g_disp4k_show = false;
+bool g_sampling4k = false;
+bool g_megapixel4k = false;
 
 // PARAMETERS
 int g_BP;

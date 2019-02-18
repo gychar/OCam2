@@ -7,7 +7,6 @@ Zoomer::Zoomer(QWidget *parent) :
     ui(new Ui::Zoomer)
 {
     ui->setupUi(this);
-
     qApp->installEventFilter(this);
     this->setFixedSize(242,542);
     this->setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);

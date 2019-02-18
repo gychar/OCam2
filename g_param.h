@@ -41,13 +41,16 @@ extern vector<short> g_register_zoom_vector;
 extern vector<short> g_imgNormal_vector;
 extern vector<unsigned short> g_img4Kraw_vector;
 extern vector<unsigned short> g_img4K_disp;
+extern vector<unsigned short> g_img4K;
 
 // QT CLASS
 extern QImage *g_image;
+extern QImage *g_image4K;
 extern QImage *g_zoom_image;
 extern QGraphicsScene *g_scene;
 extern QGraphicsScene *g_scene2;
 extern QGraphicsScene *g_scene_zoom;
+extern QGraphicsScene *g_scene_4k;
 extern QTime *g_qtimeObj;
 
 // OCAM II
@@ -85,6 +88,9 @@ extern bool g_test4K;
 extern bool g_select_done;
 extern bool g_4kacqui;
 extern bool g_pre_acqui;
+extern bool g_disp4k_show;
+extern bool g_sampling4k;
+extern bool g_megapixel4k;
 
 // PARAMETERS
 extern int g_BP;

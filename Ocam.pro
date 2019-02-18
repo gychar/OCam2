@@ -36,7 +36,8 @@ SOURCES += \
     zoomer.cpp \
     qgraphicsviewcustom.cpp \
     qgraphicsitemcustom.cpp \
-    select_mode.cpp
+    select_mode.cpp \
+    display4k.cpp
 
 HEADERS += \
     ocam2_sdk.h \
@@ -52,14 +53,16 @@ HEADERS += \
     zoomer.h \
     qgraphicsviewcustom.h \
     qgraphicsitemcustom.h \
-    select_mode.h
+    select_mode.h \
+    display4k.h
 
 FORMS += \
     mainwindow.ui \
     dialog_histogram.ui \
     dialog_stats.ui \
     zoomer.ui \
-    select_mode.ui
+    select_mode.ui \
+    display4k.ui
 
 PKGCONFIG += git
 new_moc.

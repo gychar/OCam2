@@ -96,10 +96,12 @@ MainWindow::MainWindow(QWidget *parent) :
     qApp->installEventFilter(this);
     ui->tabWidget->setCurrentIndex(0);
     g_image = new QImage();
+    g_image4K = new QImage();
     g_zoom_image = new QImage();
     g_scene = new QGraphicsScene;
     g_scene2 = new QGraphicsScene;
     g_scene_zoom = new QGraphicsScene;
+    g_scene_4k = new QGraphicsScene;
     g_qtimeObj = new QTime;
 
     Init_Driver();
@@ -245,6 +247,16 @@ void MainWindow::McCallback(PMCCALLBACKINFO CallBackInfo){
                     McSetParamInt(g_hChannel, MC_ChannelState, MC_ChannelState_IDLE);
                 }
             }else{
+
+                for(int j = 0; j < g_sizeX*g_sizeY/2; j++){
+                    int reg = j / (1056 * 2055);
+                    int pos = j - reg * (1056 * 2055);
+                    int x = pos % 1056 + reg * 1056;
+                    int y = pos / 1056;
+                    int index = x + y * 8448;
+                    g_img4K[index] =  (static_cast<unsigned short>(*(pImage+j*2+1))) << 8 | *(pImage+j*2);
+                }
+
                 // Merge two 8-bit char to a 16-bit short
                 for(int j = 0; j < PIXEL_4K_RAW; j++){
                     g_img4Kraw_vector[j] = (static_cast<short>(*(pImage+j*2+1)<<8)) | *(pImage+j*2);
@@ -265,22 +277,24 @@ void MainWindow::McCallback(PMCCALLBACKINFO CallBackInfo){
         // display current frame
         else if(g_callback_mode == 1){
             if(!g_test4K){
-                unsigned char buffer[g_sizeX*g_sizeY];
-                // Copy memory to char array
-                for(int i = 0;i<g_sizeX*g_sizeY;i++){
-                    buffer[i] = (*(pImage+i));
-                }
                 // Merge two 8-bit char to a 16-bit short
                 for(int i = 0;i<OCAM2_PIXELS_RAW_NORMAL;i++){
-                    g_imageRawNormal[i] = (static_cast<short>((buffer[i*2+1])<<8)) |(buffer[i*2]);
+                    g_imageRawNormal[i] = (static_cast<short>(((*(pImage+(i*2+1))))<<8)) |((*(pImage+(i*2))));
                 }
             }else{
+                //                for(int j = 0; j < g_sizeX*g_sizeY/2; j++){
+                //                    g_img4Kraw_vector[j] =  (static_cast<unsigned short>(*(pImage+j*2+1))) << 8 | *(pImage+j*2);
+                //                }
                 for(int j = 0; j < g_sizeX*g_sizeY/2; j++){
-                    g_img4Kraw_vector[j] =  (static_cast<unsigned short>(*(pImage+j*2+1))) << 8 | *(pImage+j*2);
-//                    g_img4Kraw_vector[j] =  (static_cast<short>(*(pImage+j*2))) << 8 | *(pImage+j*2+1);
-//                    g_img4Kraw_vector[j] = g_img4Kraw_vector[j] & 0x3fff;
+                    int reg = j / (1056 * 2055);
+                    int pos = j - reg * (1056 * 2055);
+                    int x = pos % 1056 + reg * 1056;
+                    int y = pos / 1056;
+                    int index = x + y * 8448;
+                    g_img4K[index] =  (static_cast<unsigned short>(*(pImage+j*2+1))) << 8 | *(pImage+j*2);
                 }
                 g_4kacqui = true;
+//                qDebug() << g_qtimeObj->currentTime().toString();
             }
         }
         break;
@@ -593,11 +607,10 @@ void MainWindow::AcquireImages4K()
     g_callback_mode = 1;
     // Start Acquisitions for this channel.
     g_status = McSetParamInt(g_hChannel, MC_ChannelState, MC_ChannelState_ACTIVE);
-    for(int j = 0; j < 1056*8; j++){
-        if(g_img4Kraw_vector[j]!=0)
-            cout << dec << j << " " << hex << g_img4Kraw_vector[j] << dec << " " << g_img4Kraw_vector[j]<< endl;
-    }
-//    test();
+    //    for(int j = 0; j < 1056*8; j++){
+    //        if(g_img4Kraw_vector[j]!=0)
+    //            cout << dec << j << " " << hex << g_img4Kraw_vector[j] << dec << " " << g_img4Kraw_vector[j]<< endl;
+    //    }
     test2();
 }
 
@@ -628,16 +641,14 @@ void MainWindow::display(const short imagebuffer[]){
 
 void MainWindow::display_4K(const vector<unsigned short> imagebuffer)
 {
-    //    g_BP = 15360;
-    //    g_WP = 15616;
     *g_image = QImage(240,240,QImage::Format_RGB888);
     for (int pos=0,i=0; i < OCAM2_PIXELS_IMAGE_NORMAL; pos+=3,i++)
     {
         unsigned char PixRed=0, PixGreen=0, PixBlue=0;
         short RawPixel= imagebuffer[i];
         //        short RawPixel= imagebuffer[i] - 15361;
-//        cout << dec << i << " " << RawPixel << endl;
-//        RawPixel -= 768;
+        //        cout << dec << i << " " << RawPixel << endl;
+        //        RawPixel -= 768;
         if (RawPixel >= 0xFF) //if pixel is above White point
             PixRed= PixGreen= PixBlue= 0xFF;//8 bit value is 255
         else if (RawPixel <= 0)//if below Black
@@ -658,36 +669,6 @@ void MainWindow::display_4K(const vector<unsigned short> imagebuffer)
 
 void MainWindow::display_4K_full(const vector<unsigned short> imagebuffer)
 {
-    *g_image = QImage(4096,4096,QImage::Format_RGB888);
-    for (int pos=0,i=0; i < 4096*4096; pos+=3,i++)
-    {
-        unsigned char PixRed=0, PixGreen=0, PixBlue=0;
-        short RawPixel= imagebuffer[i];
-        RawPixel /= 64;
-//        if(RawPixel > 15361){
-//            RawPixel = RawPixel - 15361;
-//        }
-//        if(RawPixel / 256 > 0){
-//            RawPixel = RawPixel % 256;
-//        }
-        //        cout << "full disp " << i << " " << RawPixel << endl;
-        if (RawPixel >= 0xFF) //if pixel is above White point
-            PixRed= PixGreen= PixBlue= 0xFF;//8 bit value is 255
-        else if (RawPixel <= 0)//if below Black
-            PixRed= PixGreen= PixBlue = 0;//value is 0
-        else{
-            PixRed= PixGreen= PixBlue= static_cast<unsigned char>(static_cast<int>(RawPixel));
-        }
-        g_image->bits()[pos] = PixRed;
-        g_image->bits()[pos+1] = PixGreen;
-        g_image->bits()[pos+2] = PixBlue;
-    }
-    g_scene->clear();
-//    g_scene->addPixmap(QPixmap::fromImage(*g_image));
-    g_scene->addPixmap(QPixmap::fromImage(g_image->scaled(4096,4096,Qt::IgnoreAspectRatio,Qt::FastTransformation)));
-
-    ui->graphicsView_3->setScene(g_scene);
-    ui->graphicsView_3->show();
 }
 
 // Threshold Function
@@ -962,293 +943,99 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     }
 }
 
-// For 4k display, sampling
+// For 4k display, sampling method: Display value for each 17 pixels to output a 240*240 matrix
 vector<unsigned short> MainWindow::Sampling4k(const vector<unsigned short> img)
 {
     vector<unsigned short> ret;
-    for(int i = 0; i < 16777216; i++){
-        int x = i % 4096;
-        int y = i / 4096;
-        if(x % 16 == 0 && y % 16 == 0){
-            ret.push_back(img[i]);
-        }
-        //        if(i > 30000 && i < 31024){
-        //            cout << "val " << i << " " << ret[i] << endl;
-        //        }
-    }
-    return ret;
-}
-
-// For 4k display, mega pixel
-vector<unsigned short> MainWindow::MegaPixel4k(const vector<unsigned short> img)
-{
-    vector<unsigned short> ret;
-    vector<vector <unsigned short>> rect_pixels(65536,vector<unsigned short>(256,0));
-    int rect_pixel_count[65536] = {0};
-    for(int i = 0; i < 16777216; i++){
-        int x = i % 4096;
-        int y = i / 4096;
-        int index = (x / 16) + ((y / 16) * 16);
-        //        cout << img[i] << "     ";
-        rect_pixels[index][rect_pixel_count[index]] = img[i];
-        rect_pixel_count[index]++;
-        //        cout << dec << i << " x = " << x << " y = " << y << " index = " << index << " " << rect_pixels[index][rect_pixel_count[index]] << endl;
-    }
-    for(int i = 0; i < 65536; i++){
-        ret.push_back(g_maths.Mean(rect_pixels[i]));
-        //        if(i > 30000 && i < 31024){
-        //            cout << dec << "val " << i << " " << ret[i] << endl;
-        //        }
-    }
-
-    return ret;
-}
-
-// Split registers
-void MainWindow::SplitReg()
-{
-    for(int i = 0; i < PIXEL_4K_RAW/2; i++){
+    for(int i = 0; i < 17360640; i++){
         int x = i % 8448;
         int y = i / 8448;
-        int reg = x / 1056;
-        g_registers_4K[reg][x-reg*1056+1056*y] = g_img4Kraw_vector[i];
-        if(g_registers_4K[reg][x-reg*1056+1056*y] != g_img4Kraw_vector[i])
-            cout << dec << i << " --- " << reg << " --- " << x-reg*1056+1056*y << " --- " << g_registers_4K[reg][x-reg*1056+1056*y] << " --- " << g_img4Kraw_vector[i] << endl;
+        if(x > 8144)
+            continue;
+        if(y > 2024)
+            continue;
+        if(x % 17  == 0 && y % 17 == 0){
+            ret.push_back(img[i]);
+        }
     }
-    cout << "Split ok" << endl;
+    return ret;
 }
 
-// Suppress overscan pixels for each register
-void MainWindow::Supp_OverScan()
+// For 4k display, mega pixel method: Display the mean value for each 17 pixel square to output 240*240 matrix
+vector<unsigned short> MainWindow::MegaPixel4k(const vector<unsigned short> img)
 {
-    for(int i = 0; i < 8; i++){
-        int k = 0;
-        for(int j = 0; j < 1056*2055; j++){
-            if(j > 7391 && (j % 1056) > 31 ){
-                g_img_supp_os_4K[i][k] = g_registers_4K[i][j];
-                //                cout << dec << j << " --- " <<ret[i][k] << " --- " << g_registers_4K[i][j] << endl;
-                k++;
-            }
+    vector<unsigned short> ret(240*240,0);
+    vector<vector <unsigned int>> square_val(240*240,vector<unsigned int>(17*17,0));
+    vector<int> square_count(240*240,0);
+    for(int i = 0; i < 8448*2055; i++){
+        int x = i % 8448;
+        int y = i / 8448;
+        if(x > 8144)
+            continue;
+        if(y > 2024)
+            continue;
+        int mx = x / 17;
+        int my = y / 17;
+        int mindex = mx+my*480;
+//        cout << dec << "i = " << i << " x = " << x << " mx = " << mx << " y = " << y << " my = " << my << " mindex = " << mindex << endl;
+        square_val[mindex][square_count[mindex]] = img[i];
+//        cout << dec << mindex << " " << square_count[mindex] << " " << img[i] << endl;
+        square_count[mindex]++;
+    }
+    for(int i = 0; i < 240*240; i++){
+        unsigned short sum = 0;
+        for(int j = 0; j < 17*17; j++){
+            sum += square_val[i][j];
         }
+        ret[i] = static_cast<unsigned short>(sum / 289);
     }
-    cout << "Supp OS ok" << endl;
-}
-
-// Combine 8 register to 4096*4096 image
-void MainWindow::Combine_Reg_4K()
-{
-    for(int i = 0; i < 8; i++){
-        int offset_x = i % 4;
-        int offset_y = i / 4;
-        for(int j = 0; j < 1056*2048; j++){
-            int x = j % 1056;
-            int y = j / 1056;
-            g_img_4K[x + offset_x * 1056 + (y + offset_y * 2048) * 4096] = g_img_supp_os_4K[i][j];
-        }
-    }
-    cout << "Combine ok" << endl;
-}
-
-void MainWindow::test()
-{
-//    for(int i = 0; i < 1056*2; i++){
-//        cout << dec << i << " " << g_img4Kraw_vector[i] << endl;
-//    }
-    // Split registers
-    for(int i = 0; i < PIXEL_4K_RAW/2; i++){
-        int reg = i % 8;
-        int pos = i / 8;
-        g_registers_4K[reg][pos] = g_img4Kraw_vector[i];
-    }
-    // Suppress overscan in axis Y
-    for(int i = 0; i < 8; i++){
-        g_registers_4K[i].erase(g_registers_4K[i].begin(),g_registers_4K[i].begin() + 7 * 1056);
-    }
-    //Combine to a full size vector
-    vector<short> img_fullsize(8448*2048,0);
-    for(int i = 0; i < 8; i++){
-        for(int j = 0; j < 1056*2048; j++){
-            int x = j % 1056 + i * 1056;
-            int y = j / 1056;
-            int index = x + y * 8448;
-            img_fullsize[index] = g_registers_4K[i][j];
-        }
-    }
-
-//    // Create 16-bits MAT
-//    Mat img(4224,4096,CV_16UC1,Scalar(0));
-//    for (int j = 0; j < img.rows; j++){
-//        for(int i = 0; i < img.cols; i++){
-//            img.at<ushort>(j,i) = static_cast<unsigned short>(img_fullsize[j*4096+i]);
-//        }
-//    }
-//    string filepath = "/acqui/png/4kfullimgtest.png";
-//    imwrite(filepath,img);
-//    cout << filepath << " saved." << endl;
-
-//    for(int i = 0; i < 8448*256; i++){
-//        cout << dec << i << " " << img_fullsize[i] << endl;
-//    }
-
-    // Suppress overscan in axis X
-    vector<unsigned short> img_final(8192*2048,0);
-    int j = 0;
-    for(int i = 0; i < 8448*2048; i++){
-        if(i % 8448 <= 8191){
-            img_final[j] = img_fullsize[i];
-            j++;
-        }
-    }
-    // Modulo
-//    for(int i = 0; i < 4096*4096; i++){
-//        img_final[i] = img_final[i] % 256;
-//    }
-
-
-    // Create 16-bits MAT
-    Mat img(4096,4096,CV_16UC1,Scalar(0));
-    for (int j = 0; j < img.rows; j++){
-        for(int i = 0; i < img.cols; i++){
-            img.at<ushort>(j,i) = static_cast<unsigned short>(img_final[j*4096+i]);
-        }
-    }
-    //    imshow(to_string(g_num), img);
-    string filepath = "/acqui/png/4kimgtest.png";
-    imwrite(filepath,img);
-    cout << filepath << " saved." << endl;
-
-//    vector<vector <short>> img_all(8448, vector<short>(2048,0));
-//    for(int i = 0; i < 8; i++){
-//        for(int j = 0; j < 1056 * 2048; j++){
-//            int x = j % 1056 + i * 1056;
-//            int y = j / 1056;
-//            img_all[x][y] = g_registers_4K[i][j];
-//        }
-//    }
-//    // Suppress overscan in axis X
-//    img_all.resize(8192);
-    // Convert to 4096*4096
-//    for(int i = 0; i < 8448; i++){
-//        for(int j = 0; j < 2056; j++){
-//            g_img_4K[i + j * 8448] = img_all[i][j];
-//        }
-//    }
-    g_img4K_disp = Sampling4k(img_final);
-//    int max = 0;
-//    int min = 999999;
-//    for(int i = 0; i < 4096*4096; i++){
-//        cout << dec << i << " " << img_final[i] << endl;
-//        if(img_final[i] > max)
-//            max = img_final[i];
-//        if(img_final[i] < min && img_final[i] != 0)
-//            min = img_final[i];
-//    }
-//    cout << dec << "max = " << max << " min = " << min << endl;
-    display_4K(g_img4K_disp);
-//    display_4K_full(g_img_4K);
+    return ret;
 }
 
 void MainWindow::test2()
 {
-    // Split registers
-    for(int i = 0; i < PIXEL_4K_RAW/2; i++){
-        int reg = i / (1056 * 2055);
-        int pos = i - reg * (1056 * 2055);
-        g_registers_4K[reg][pos] = g_img4Kraw_vector[i];
-    }
-//    // Suppress overscan in axis Y
-//    for(int i = 0; i < 8; i++){
-//        g_registers_4K[i].erase(g_registers_4K[i].begin(),g_registers_4K[i].begin() + 7 * 1056);
-//    }
-    //Combine to a full size vector
-    vector<unsigned short> img_fullsize(8448*2055,0);
-    for(int i = 0; i < 8; i++){
-        for(int j = 0; j < 1056*2055; j++){
-            int x = j % 1056 + i * 1056;
-            int y = j / 1056;
-            int index = x + y * 8448;
-//            cout << dec << i << " " << j << " " << index << endl;
-            img_fullsize[index] = g_registers_4K[i][j];
-        }
-    }
-
-//    // Create 16-bits MAT
-//    Mat img(4224,4096,CV_16UC1,Scalar(0));
+    // Create 16-bits MAT
+//    Mat img(2055,8448,CV_16UC1,Scalar(0));
 //    for (int j = 0; j < img.rows; j++){
 //        for(int i = 0; i < img.cols; i++){
-//            img.at<ushort>(j,i) = static_cast<unsigned short>(img_fullsize[j*4096+i]);
+//            //            img.at<ushort>(j,i) = (img_fullsize[j*8448+i]) & 0xff;
+//            img.at<ushort>(j,i) = (g_img4K[j*8448+i]) & 0xff;
 //        }
 //    }
-//    string filepath = "/acqui/png/4kfullimgtest.png";
+//    string filepath = "/acqui/png/4kimgtest.png";
 //    imwrite(filepath,img);
 //    cout << filepath << " saved." << endl;
-
-//    for(int i = 0; i < 8448*256; i++){
-//        cout << dec << i << " " << img_fullsize[i] << endl;
-//    }
-
-//    // Suppress overscan in axis X
-//    vector<short> img_final(8192*2048,0);
-//    int j = 0;
-//    for(int i = 0; i < 8448*2048; i++){
-//        if(i % 8448 <= 8191){
-//            img_final[j] = img_fullsize[i];
-//            j++;
-//        }
-//    }
-//     Modulo
-//    for(int i = 0; i < 4096*4096; i++){
-//        img_final[i] = img_final[i] % 256;
-//    }
-
-    // Create 16-bits MAT
-    Mat img(2055,8448,CV_16UC1,Scalar(0));
-    for (int j = 0; j < img.rows; j++){
-        for(int i = 0; i < img.cols; i++){
-            img.at<ushort>(j,i) = (img_fullsize[j*8448+i]) & 0xff;
-//            cout << dec << i*8448+i << endl;
+    if(g_disp4k_show){
+        *g_image4K = QImage(8448,2055,QImage::Format_RGB888);
+        for (int pos=0,i=0; i < 2055*8448; pos+=3,i++)
+        {
+            unsigned char PixRed=0, PixGreen=0, PixBlue=0;
+            short RawPixel= static_cast<short>(g_img4K[i] & 0xff);
+            if (RawPixel >= 0xFF) //if pixel is above White point
+                PixRed= PixGreen= PixBlue= 0xFF;//8 bit value is 255
+            else if (RawPixel <= 0)//if below Black
+                PixRed= PixGreen= PixBlue = 0;//value is 0
+            else{
+                PixRed= PixGreen= PixBlue= static_cast<unsigned char>(static_cast<int>(RawPixel));
+            }
+            g_image4K->bits()[pos] = PixRed;
+            g_image4K->bits()[pos+1] = PixGreen;
+            g_image4K->bits()[pos+2] = PixBlue;
         }
+        g_scene_4k->clear();
+        g_scene_4k->addPixmap(QPixmap::fromImage(*g_image4K));
     }
-    //    imshow(to_string(g_num), img);
-    string filepath = "/acqui/png/4kimgtest.png";
-    imwrite(filepath,img);
-    cout << filepath << " saved." << endl;
 
+    vector<unsigned short> img_disp_fullsize(8448*2055,0);
+    for(int i = 0; i < 8448*2055; i++){
+        //        img_disp_fullsize[i] = img_fullsize[i] & 0xff;
+        img_disp_fullsize[i] = g_img4K[i] & 0xff;
+    }
+    //    g_img4K_disp = Sampling4k(img_disp_fullsize);
+//    g_img4K_disp = Sampling4k(img_disp_fullsize);
+    g_img4K_disp = MegaPixel4k(img_disp_fullsize);
+    display_4K(g_img4K_disp);
 
-//    for(int i = 8448*7; i < 8448*20; i++){
-//        cout << dec << i << " " << hex << img_fullsize[i] << " " << dec << img_fullsize[i] << endl;
-//    }
-
-
-//    vector<vector <short>> img_all(8448, vector<short>(2048,0));
-//    for(int i = 0; i < 8; i++){
-//        for(int j = 0; j < 1056 * 2048; j++){
-//            int x = j % 1056 + i * 1056;
-//            int y = j / 1056;
-//            img_all[x][y] = g_registers_4K[i][j];
-//        }
-//    }
-//    // Suppress overscan in axis X
-//    img_all.resize(8192);
-    // Convert to 4096*4096
-//    for(int i = 0; i < 8448; i++){
-//        for(int j = 0; j < 2056; j++){
-//            g_img_4K[i + j * 8448] = img_all[i][j];
-//        }
-//    }
-//    g_img4K_disp = Sampling4k(img_final);
-//    int max = 0;
-//    int min = 999999;
-//    for(int i = 0; i < 4096*4096; i++){
-//        cout << dec << i << " " << img_final[i] << endl;
-//        if(img_final[i] > max)
-//            max = img_final[i];
-//        if(img_final[i] < min && img_final[i] != 0)
-//            min = img_final[i];
-//    }
-//    cout << dec << "max = " << max << " min = " << min << endl;
-//    display_4K(g_img4K_disp);
-//    display_4K_full(g_img_4K);
 }
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
@@ -2000,58 +1787,11 @@ void MainWindow::on_Zoom_PB_clicked()
 // Display 4K
 void MainWindow::on_Display_4K_PB_clicked()
 {
-    AcquireImages4K();
-
-    // Split registers
-    for(int i = 0; i < PIXEL_4K_RAW/2; i++){
-        int reg = i / (1056 * 2055);
-        int pos = i - reg * (1056 * 2055);
-        g_registers_4K[reg][pos] = g_img4Kraw_vector[i];
+    if(!g_disp4k_show){
+        Disp4K_win = new Display4K;
+        Disp4K_win->show();
+        g_disp4k_show = true;
     }
-
-//    for(int i = 0; i < PIXEL_4K_RAW/2; i++){
-//        int x = i % 8448;
-//        int y = i / 8448;
-//        int reg = x / 1056;
-//        g_registers_4K[reg][x-reg*1056+1056*y] = g_img4Kraw_vector[i];
-//        if(g_registers_4K[reg][x-reg*1056+1056*y] != g_img4Kraw_vector[i])
-//            cout << dec << i << " --- " << reg << " --- " << x-reg*1056+1056*y << " --- " << g_registers_4K[reg][x-reg*1056+1056*y] << " --- " << g_img4Kraw_vector[i] << endl;
-//    }
-//    cout << "Split ok" << endl;
-
-    //Combine to a full size vector
-    vector<vector <unsigned short>> img_all(2055, vector<unsigned short>(8448,0));
-    for(int i = 0; i < 8; i++){
-        for(int j = 0; j < 1056 * 2055; j++){
-            int x = j % 1056 + i * 1056;
-            int y = j / 1056;
-            img_all[y][x] = g_registers_4K[i][j];
-        }
-    }
-
-    // Convert to 1D vector
-    vector<unsigned short> img4K1D(8448*2055,0);
-    for(int i = 0; i < 2055; i++){
-        for(int j = 0; j < 8448; j++){
-            int index = i + j * 2055;
-            img4K1D[index] = img_all[i][j];
-        }
-    }
-    cout << "convert ok " << endl;
-    // Create 16-bits MAT
-    Mat img(2055,8448,CV_16UC1,Scalar(0));
-    for (int j = 0; j < img.rows; j++){
-        for(int i = 0; i < img.cols; i++){
-            img.at<ushort>(j,i) = static_cast<unsigned short>(img4K1D[j*8448+i]);
-        }
-    }
-    //    imshow(to_string(g_num), img);
-    string filepath = "/acqui/png/test.png";
-    imwrite(filepath,img);
-    cout << filepath << " saved." << endl;
-
-    display_4K_full(g_img_4K);
-
 }
 
 // Single Save Button
@@ -3950,6 +3690,25 @@ void MainWindow::on_Test4K_RB_clicked(bool checked)
         cout << "4K end" << endl;
     }
 }
+
+void MainWindow::on_Sampling_Button_toggled(bool checked)
+{
+    if(checked){
+        g_sampling4k = true;
+        g_megapixel4k = false;
+        ui->MegaPixel_Button->setChecked(false);
+    }
+}
+
+void MainWindow::on_MegaPixel_Button_toggled(bool checked)
+{
+    if(checked){
+        g_megapixel4k = true;
+        g_sampling4k = false;
+        ui->Sampling_Button->setChecked(false);
+    }
+}
+
 /*================= QT GUI FUNCTIONS END ======================================*/
 
 /*================= OTHER FUNCTION START ======================================*/
@@ -3987,6 +3746,10 @@ int get_y(int in){
 }
 
 /*================= OTHER FUNCTION END ======================================*/
+
+
+
+
 
 
 

@@ -43,6 +43,7 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "zoomer.h"
+#include "display4k.h"
 #include "select_mode.h"
 
 using namespace std;
@@ -65,6 +66,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     Zoomer *Zoomer_win;
+    Display4K *Disp4K_win;
     Select_Mode *Mode_win;
     QTimer *timer;
     bool eventFilter(QObject *obj, QEvent *ev);
@@ -192,6 +194,10 @@ private slots:
     void on_Test4K_RB_clicked(bool checked);
 
     void on_Display_4K_PB_clicked();
+
+    void on_Sampling_Button_toggled(bool checked);
+
+    void on_MegaPixel_Button_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;
