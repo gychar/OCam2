@@ -247,25 +247,15 @@ void MainWindow::McCallback(PMCCALLBACKINFO CallBackInfo){
                     McSetParamInt(g_hChannel, MC_ChannelState, MC_ChannelState_IDLE);
                 }
             }else{
-
                 for(int j = 0; j < g_sizeX*g_sizeY/2; j++){
                     int reg = j / (1056 * 2055);
                     int pos = j - reg * (1056 * 2055);
                     int x = pos % 1056 + reg * 1056;
                     int y = pos / 1056;
                     int index = x + y * 8448;
-                    g_img4K[index] =  (static_cast<unsigned short>(*(pImage+j*2+1))) << 8 | *(pImage+j*2);
+                    g_surfacebuffer_short[g_surfacebuffercount][index] =  (static_cast<unsigned short>(*(pImage+j*2+1))) << 8 | *(pImage+j*2);
                 }
-
-                // Merge two 8-bit char to a 16-bit short
-                for(int j = 0; j < PIXEL_4K_RAW; j++){
-                    g_img4Kraw_vector[j] = (static_cast<short>(*(pImage+j*2+1)<<8)) | *(pImage+j*2);
-                }
-                cout << "merge ok " << endl;
-                // Convert to 14 bits data
-                for(int i = 0; i < PIXEL_4K_RAW; i++){
-                    g_surfacebuffer_short[g_surfacebuffercount][i] = g_img4Kraw_vector[i] & 0x3fff;
-                }
+                g_4kacqui = true;
                 if(g_surfacebuffercount < g_buffersize - 1){
                     g_surfacebuffercount++;
                 }else{
@@ -294,7 +284,7 @@ void MainWindow::McCallback(PMCCALLBACKINFO CallBackInfo){
                     g_img4K[index] =  (static_cast<unsigned short>(*(pImage+j*2+1))) << 8 | *(pImage+j*2);
                 }
                 g_4kacqui = true;
-//                qDebug() << g_qtimeObj->currentTime().toString();
+                //                qDebug() << g_qtimeObj->currentTime().toString();
             }
         }
         break;
@@ -499,15 +489,23 @@ void MainWindow::SerialInit(){
 // Big Image Buffer Initialization Function
 void MainWindow::InitBigImageBuffer(){
     g_BigImageBufferIndex = 0;
-    g_BigImageBuffer = new short *[g_CIRCULAR_BUFFER];
-    g_BigImageNum = new int[g_CIRCULAR_BUFFER];
-    for(unsigned long i = 0; i < g_CIRCULAR_BUFFER; i++){
-        g_BigImageBuffer[i] = new short[OCAM2_PIXELS_IMAGE_NORMAL];
-        memset(g_BigImageBuffer[i],0,OCAM2_PIXELS_IMAGE_NORMAL*sizeof(short));
+    if(!g_test4K){
+        g_BigImageBuffer = new short *[g_CIRCULAR_BUFFER];
+        g_BigImageNum = new int[g_CIRCULAR_BUFFER];
+        for(unsigned long i = 0; i < g_CIRCULAR_BUFFER; i++){
+            g_BigImageBuffer[i] = new short[OCAM2_PIXELS_IMAGE_NORMAL];
+            memset(g_BigImageBuffer[i],0,OCAM2_PIXELS_IMAGE_NORMAL*sizeof(short));
+        }
+    }else{
+        g_CIRCULAR_BUFFER = 120;
+        g_BigImageBuffer = new short *[g_CIRCULAR_BUFFER];
+        g_BigImageNum = new int[g_CIRCULAR_BUFFER];
+        for(unsigned long i = 0; i < g_CIRCULAR_BUFFER; i++){
+            g_BigImageBuffer[i] = new short[8448*2055];
+            memset(g_BigImageBuffer[i],0,8448*2055*sizeof(short));
+        }
     }
 }
-
-
 
 /*================= INITIALIZATIONS END ====================================*/
 
@@ -977,17 +975,14 @@ vector<unsigned short> MainWindow::MegaPixel4k(const vector<unsigned short> img)
         int mx = x / 17;
         int my = y / 17;
         int mindex = mx+my*480;
-//        cout << dec << "i = " << i << " x = " << x << " mx = " << mx << " y = " << y << " my = " << my << " mindex = " << mindex << endl;
         square_val[mindex][square_count[mindex]] = img[i];
-//        cout << dec << mindex << " " << square_count[mindex] << " " << img[i] << endl;
         square_count[mindex]++;
     }
+    g_qtimeObj->start();
     for(int i = 0; i < 240*240; i++){
-        unsigned short sum = 0;
-        for(int j = 0; j < 17*17; j++){
-            sum += square_val[i][j];
-        }
-        ret[i] = static_cast<unsigned short>(sum / 289);
+        ret[i] = g_maths.Median(square_val[i]);
+//        qDebug() << "Time used: " << g_qtimeObj->elapsed() << "s";
+//        ret[i] = g_maths.Mean(square_val[i]);
     }
     return ret;
 }
@@ -995,16 +990,16 @@ vector<unsigned short> MainWindow::MegaPixel4k(const vector<unsigned short> img)
 void MainWindow::test2()
 {
     // Create 16-bits MAT
-//    Mat img(2055,8448,CV_16UC1,Scalar(0));
-//    for (int j = 0; j < img.rows; j++){
-//        for(int i = 0; i < img.cols; i++){
-//            //            img.at<ushort>(j,i) = (img_fullsize[j*8448+i]) & 0xff;
-//            img.at<ushort>(j,i) = (g_img4K[j*8448+i]) & 0xff;
-//        }
-//    }
-//    string filepath = "/acqui/png/4kimgtest.png";
-//    imwrite(filepath,img);
-//    cout << filepath << " saved." << endl;
+    //    Mat img(2055,8448,CV_16UC1,Scalar(0));
+    //    for (int j = 0; j < img.rows; j++){
+    //        for(int i = 0; i < img.cols; i++){
+    //            //            img.at<ushort>(j,i) = (img_fullsize[j*8448+i]) & 0xff;
+    //            img.at<ushort>(j,i) = (g_img4K[j*8448+i]) & 0xff;
+    //        }
+    //    }
+    //    string filepath = "/acqui/png/4kimgtest.png";
+    //    imwrite(filepath,img);
+    //    cout << filepath << " saved." << endl;
     if(g_disp4k_show){
         *g_image4K = QImage(8448,2055,QImage::Format_RGB888);
         for (int pos=0,i=0; i < 2055*8448; pos+=3,i++)
@@ -1032,8 +1027,12 @@ void MainWindow::test2()
         img_disp_fullsize[i] = g_img4K[i] & 0xff;
     }
     //    g_img4K_disp = Sampling4k(img_disp_fullsize);
-//    g_img4K_disp = Sampling4k(img_disp_fullsize);
-    g_img4K_disp = MegaPixel4k(img_disp_fullsize);
+    if(g_sampling4k){
+        g_img4K_disp = Sampling4k(img_disp_fullsize);
+    }
+    if(g_megapixel4k){
+        g_img4K_disp = MegaPixel4k(img_disp_fullsize);
+    }
     display_4K(g_img4K_disp);
 
 }
@@ -2017,13 +2016,13 @@ void MainWindow::on_BufferAllocate_PB_clicked()
         g_qtimeObj->start();
         g_buffersize = ui->Sequence_spinBox->value();
         //        g_surfacebuffer = new unsigned char *[g_buffersize];
-        g_surfacebuffer_short = new short *[g_buffersize];
+        g_surfacebuffer_short = new unsigned short *[g_buffersize];
         for(int i = 0; i < g_buffersize; i++){
             //            g_surfacebuffer[i] = new unsigned char[g_sizeX*g_sizeY];
             if(!g_test4K){
-                g_surfacebuffer_short[i] = new short[OCAM2_PIXELS_IMAGE_NORMAL];
+                g_surfacebuffer_short[i] = new unsigned short[OCAM2_PIXELS_IMAGE_NORMAL];
             }else{
-                g_surfacebuffer_short[i] = new short[PIXEL_4K_RAW];
+                g_surfacebuffer_short[i] = new unsigned short[8448*2055];
             }
         }
         int t = g_qtimeObj->elapsed();
@@ -2042,6 +2041,7 @@ void MainWindow::on_BufferAllocate_PB_clicked()
 void MainWindow::on_BufferAcquire_PB_clicked()
 {
     qDebug() << "Start acquiring image to buffer";
+    g_callback_mode = 0;
     g_surfacebuffercount = 0;
     g_qtimeObj->start();
     g_status = McSetParamInt(g_hChannel, MC_ChannelState, MC_ChannelState_ACTIVE);
@@ -2074,86 +2074,57 @@ void MainWindow::on_BufferAcquire_PB_clicked()
 // Save Raw Buffer
 void MainWindow::on_BufferSave_PB_clicked()
 {
-    //    // Allocate buffer for short
-    //    vector<vector <short>> imageNormal(g_buffersize, vector<short>(OCAM2_PIXELS_IMAGE_NORMAL,0));
-    //    // For each frame
-    //    for(int k = 0; k < g_buffersize; k++){
-    //        // Merge two 8-bit char to a 16-bit short
-    //        for(int j = 0;j<OCAM2_PIXELS_RAW_NORMAL;j++){
-    //            g_imageRawNormal[j] = (static_cast<short>((g_surfacebuffer[k][j*2+1])<<8)) | (g_surfacebuffer[k][j*2]);
-    //        }
-    //        ocam2_descramble(g_id, &g_number, g_imageNormal, g_imageRawNormal);
-    //        // Convert to 14 bits data
-    //        for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
-    //            imageNormal[k][i] = g_imageNormal[i] & 0x3fff;
-    //        }
-    //    }
-    //    g_qtimeObj->start();
-    //    qDebug() << "Start Buffer Saving";
-    //    ui->progressBar->reset();
-    //    ui->progressBar->setMaximum(g_buffersize-1);
-    //    QString filename = "/acqui/data/Rawframes"+QString::number(g_buffersize) + "_frames.dat";
-    //    QFile file(filename);
-    //    if(file.open(QIODevice::WriteOnly)){
-    //        QDataStream out(&file);
-    //        // Write a header with a "magic number" and a version
-    //        out << static_cast<qint16>(0xee);
-    //        //        out.setVersion(QDataStream::Qt_5_11);
-    //        out << static_cast<qint32>(g_buffersize);
-    //        out << static_cast<qint32>(g_BP);
-    //        out << static_cast<qint32>(g_WP);
-    //        // For each frame
-    //        for(int k = 0; k < g_buffersize; k++){
-    //            for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
-    //                out << static_cast<qint16>(imageNormal[k][i]);
-    //            }
-    //            ui->progressBar->setValue(k);
-    //        }
-    //    }
-    //    file.close();
-    //    qDebug() << filename << "saved.";
-    //    qDebug() << "Time used: " << g_qtimeObj->elapsed()/1000.0 << "s";
-    //    ChangeSection();
-
-    // Allocate buffer for short
-    short imageNormal[OCAM2_PIXELS_IMAGE_NORMAL];
+    cout << "save start" << endl;
     g_qtimeObj->start();
     qDebug() << "Start Buffer Saving";
     ui->progressBar->reset();
     ui->progressBar->setMaximum(g_buffersize-1);
     FILE *pFile;
     string filepath;
-    filepath = "/acqui/data/Rawframes" + to_string(g_buffersize) + "_frames.dat";
+    if(!g_test4K){
+        filepath = "/acqui/data/Rawframes" + to_string(g_buffersize) + "_frames.dat";
+    }else{
+        filepath = "/acqui/data/Rawframes_4k_" + to_string(g_buffersize) + "_frames.dat";
+    }
     char * filename = new char [filepath.length()+1];
     std::strcpy(filename,filepath.c_str());
     pFile = fopen(filename,"wb");
-    // Write a header with a "magic number" and a version
-    short magic[1] = {static_cast<short>(10)};
-    fwrite(magic,2,1,pFile);
-    int data[3];
-    data[0] = g_buffersize;
-    data[1] = g_BP;
-    data[2] = g_WP;
-    fwrite(data,4,3,pFile);
-    for(int k = 0; k < g_buffersize; k++){
-        //        // Merge two 8-bit char to a 16-bit short
-        //        for(int j = 0;j<OCAM2_PIXELS_RAW_NORMAL;j++){
-        //            g_imageRawNormal[j] = (static_cast<short>((g_surfacebuffer[k][j*2+1])<<8)) | (g_surfacebuffer[k][j*2]);
-        //        }
-        //        ocam2_descramble(g_id, &g_number, g_imageNormal, g_imageRawNormal);
-        //        // Convert to 14 bits data
-        //        for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
-        //            imageNormal[i] = g_imageNormal[i] & 0x3fff;
-        //        }
-        for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
-            imageNormal[i] = g_surfacebuffer_short[k][i];
+    if(!g_test4K){
+        // Allocate buffer for short
+        short imageNormal[OCAM2_PIXELS_IMAGE_NORMAL];
+        // Write a header with a "magic number" and a version
+        short magic[1] = {static_cast<short>(10)};
+        fwrite(magic,2,1,pFile);
+        int data[3];
+        data[0] = g_buffersize;
+        data[1] = g_BP;
+        data[2] = g_WP;
+        fwrite(data,4,3,pFile);
+        for(int k = 0; k < g_buffersize; k++){
+            for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL; i++){
+                imageNormal[i] = g_surfacebuffer_short[k][i];
+            }
+            fwrite(imageNormal,2, OCAM2_PIXELS_IMAGE_NORMAL, pFile);
+            ui->progressBar->setValue(k);
         }
-        fwrite(imageNormal,2, OCAM2_PIXELS_IMAGE_NORMAL, pFile);
-        ui->progressBar->setValue(k);
+    }else{
+        // Allocate buffer for short
+        // Write a header with a "magic number" and a version
+        short magic[1] = {static_cast<short>(15)};
+        fwrite(magic,2,1,pFile);
+        int data[1];
+        data[0] = g_buffersize;
+        fwrite(data,4,1,pFile);
+        for(int k = 0; k < g_buffersize; k++){
+            for(int i = 0; i < 8448*2055; i++){
+                g_save4kbuffer[i] = g_surfacebuffer_short[k][i];
+            }
+            fwrite(g_save4kbuffer,2, 8448*2055, pFile);
+            ui->progressBar->setValue(k);
+        }
     }
     fclose(pFile);
     qDebug() << "Time used: " << g_qtimeObj->elapsed()/1000.0 << "s";
-
 }
 
 // Load Raw Buffer
@@ -2174,25 +2145,39 @@ void MainWindow::on_BufferLoad_PB_clicked()
             qint16 magic;
             in >> magic;
             qDebug() << magic;
-            if(magic != 10)
+            in.setVersion(QDataStream::Qt_5_11);
+            qint32 frames;
+            qint32 data;
+            qint16 val;
+            if(magic != 10 && magic != 15){
                 QMessageBox::warning(this,"Warning","Bad file format", QMessageBox::Ok);
-            else{
-                in.setVersion(QDataStream::Qt_5_11);
-                qint32 frames;
+            }
+            else if(magic == 10){
+                // OCam II
                 in >> frames;
                 loadframes = frames;
                 g_BigImageBufferIndex = frames;
                 ui->progressBar->setMaximum(loadframes-1);
-                qint32 data;
                 in >> data;
                 g_BP = data;
                 in >> data;
                 g_WP = data;
-                qint16 val;
                 for(int j = 0; j < loadframes; j++){
                     for(int i = 0; i < OCAM2_PIXELS_IMAGE_NORMAL;i++){
-                        //                        in >> val;
-                        //                        g_BigImageBuffer[j][i] = val;
+                        in >> g_BigImageBuffer[j][i];
+                    }
+                    ui->progressBar->setValue(j);
+                    ui->ImageName_Label->setText(QString::number(j+1) + " / " +QString::number(loadframes));
+                }
+            }
+            else if(magic == 15){
+                // Simulateur 4K
+                in >> frames;
+                loadframes = frames;
+                g_BigImageBufferIndex = frames;
+                ui->progressBar->setMaximum(loadframes-1);
+                for(int j = 0; j < loadframes; j++){
+                    for(int i = 0; i < 8448*2055;i++){
                         in >> g_BigImageBuffer[j][i];
                     }
                     ui->progressBar->setValue(j);
@@ -2213,15 +2198,34 @@ void MainWindow::on_BufferDisplay_PB_clicked()
 {
     g_qtimeObj->start();
     ui->progressBar->setMaximum(g_BigImageBufferIndex);
-    for(int i = 0; i < g_BigImageBufferIndex;i++){
-        if(!g_load_correction)
-            pixel_correction(g_BigImageBuffer[i],g_BigImageBuffer[i]);
-        display(g_BigImageBuffer[i]);
-        ui->progressBar->setValue(i+1);
-        ui->ImageName_Label->setText(QString::number(i+1) + " / " +QString::number(g_BigImageBufferIndex));
-        QTest::qWait(0);
+    if(!g_test4K){
+        for(int i = 0; i < g_BigImageBufferIndex;i++){
+            if(!g_load_correction)
+                pixel_correction(g_BigImageBuffer[i],g_BigImageBuffer[i]);
+            display(g_BigImageBuffer[i]);
+            ui->progressBar->setValue(i+1);
+            ui->ImageName_Label->setText(QString::number(i+1) + " / " +QString::number(g_BigImageBufferIndex));
+            QTest::qWait(0);
+        }
+        g_load_correction = true;
+    }else{
+        vector<unsigned short> img_disp_fullsize(8448*2055,0);
+        for(int i = 0; i < g_BigImageBufferIndex;i++){
+            for(int j = 0; j < 8448*2055; j++){
+                img_disp_fullsize[j] = g_BigImageBuffer[i][j] & 0xff;
+            }
+            if(g_sampling4k){
+                g_img4K_disp = Sampling4k(img_disp_fullsize);
+            }
+            if(g_megapixel4k){
+                g_img4K_disp = MegaPixel4k(img_disp_fullsize);
+            }
+            display_4K(g_img4K_disp);
+            ui->progressBar->setValue(i+1);
+            ui->ImageName_Label->setText(QString::number(i+1) + " / " +QString::number(g_BigImageBufferIndex));
+            QTest::qWait(0);
+        }
     }
-    g_load_correction = true;
     qDebug() << "Time used: " << g_qtimeObj->elapsed()/1000.0 << "s";
     ChangeSection();
 }
@@ -3746,16 +3750,3 @@ int get_y(int in){
 }
 
 /*================= OTHER FUNCTION END ======================================*/
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -34,7 +34,7 @@ extern short **g_BigImageBuffer;
 extern short **g_image_cycle;
 extern short g_image_cycle_sum[OCAM2_PIXELS_IMAGE_NORMAL];
 extern unsigned char **g_surfacebuffer;
-extern short **g_surfacebuffer_short;
+extern unsigned short **g_surfacebuffer_short;
 extern unsigned int g_buffersize;
 extern vector<short> g_register_zoom_8bits;
 extern vector<short> g_register_zoom_vector;
@@ -103,7 +103,7 @@ extern int g_num_frames;
 extern int g_masknum;
 extern int g_BigImageBufferIndex;
 extern int *g_BigImageNum;
-extern unsigned long const g_CIRCULAR_BUFFER;
+extern unsigned long g_CIRCULAR_BUFFER;
 extern unsigned int g_number;
 extern char g_ReadBuffer[1024];
 extern QString g_data_path;
@@ -143,6 +143,7 @@ extern float g_Sigma2Read;
 extern vector<vector <unsigned short>> g_registers_4K;
 extern vector<vector <unsigned short>> g_img_supp_os_4K;
 extern vector<unsigned short> g_img_4K;
+extern unsigned short g_save4kbuffer[8448*2055];
 
 /*================= GLOBAL PARAMETERS DECLARATION END=====================*/
 

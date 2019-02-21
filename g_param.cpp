@@ -24,7 +24,7 @@ short **g_BigImageBuffer;
 short **g_image_cycle = new short*[g_nb_cycle];
 short g_image_cycle_sum[OCAM2_PIXELS_IMAGE_NORMAL] = {0};
 unsigned char **g_surfacebuffer;
-short **g_surfacebuffer_short;
+unsigned short **g_surfacebuffer_short;
 unsigned int g_buffersize;
 vector<short> g_register_zoom_8bits(g_mask_pixel,0);
 vector<short> g_register_zoom_vector(g_mask_pixel,0);;
@@ -80,7 +80,7 @@ bool g_select_done = false;
 bool g_4kacqui = false;
 bool g_pre_acqui = true;
 bool g_disp4k_show = false;
-bool g_sampling4k = false;
+bool g_sampling4k = true;
 bool g_megapixel4k = false;
 
 // PARAMETERS
@@ -98,7 +98,7 @@ char g_ReadBuffer[1024];
 QString g_data_path = "/acqui/";
 Maths g_maths;
 float g_median, g_meanvalue, g_variance, g_SD, g_SNR;
-unsigned long const g_CIRCULAR_BUFFER = 60000;
+unsigned long g_CIRCULAR_BUFFER = 60000;
 unsigned int g_num = 1;
 vector<vector <float>> g_plot_I_D_Mean(8, vector<float>(g_statistics_try,0));
 vector<vector <float>> g_plot_I_D_Var(8, vector<float>(g_statistics_try,0));
@@ -131,7 +131,9 @@ float g_Sigma2Read = 0;
 // TEST
 vector<vector <unsigned short>> g_registers_4K(8,vector<unsigned short>(1056*2055,0));
 vector<vector <unsigned short>> g_img_supp_os_4K(8,vector<unsigned short>(1024*2048,0));;
-vector<unsigned short> g_img_4K(4096*4096,0);;
+vector<unsigned short> g_img_4K(4096*4096,0);
+unsigned short g_save4kbuffer[] = {0};
+
 
 /*================= GLOBAL PARAMETERS DECLARATION END=====================*/
 
