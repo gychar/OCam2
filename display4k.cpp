@@ -18,6 +18,7 @@ Display4K::~Display4K()
 
 void Display4K::display()
 {
+    QCoreApplication::processEvents();
     ui->graphicsView->setScene(g_scene_4k);
     ui->graphicsView->show();
     cout << "4k displayed" << endl;

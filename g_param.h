@@ -42,6 +42,7 @@ extern vector<short> g_imgNormal_vector;
 extern vector<unsigned short> g_img4Kraw_vector;
 extern vector<unsigned short> g_img4K_disp;
 extern vector<unsigned short> g_img4K;
+extern vector<unsigned short> g_img4K_pixel_val;
 
 // QT CLASS
 extern QImage *g_image;
@@ -91,6 +92,8 @@ extern bool g_pre_acqui;
 extern bool g_disp4k_show;
 extern bool g_sampling4k;
 extern bool g_megapixel4k;
+extern bool g_megapixel4k_mean;
+extern bool g_megapixel4k_median;
 
 // PARAMETERS
 extern int g_BP;

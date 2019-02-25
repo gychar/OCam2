@@ -11,6 +11,7 @@
 #include <iostream>
 #include <QResizeEvent>
 #include <unistd.h>
+#include "qgraphicsviewcustom.h"
 
 namespace Ui {
 class Display4K;

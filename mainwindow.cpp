@@ -602,6 +602,7 @@ void MainWindow::AcquireImages()
 
 void MainWindow::AcquireImages4K()
 {
+    QCoreApplication::processEvents();
     g_callback_mode = 1;
     // Start Acquisitions for this channel.
     g_status = McSetParamInt(g_hChannel, MC_ChannelState, MC_ChannelState_ACTIVE);
@@ -639,6 +640,7 @@ void MainWindow::display(const short imagebuffer[]){
 
 void MainWindow::display_4K(const vector<unsigned short> imagebuffer)
 {
+    QCoreApplication::processEvents();
     *g_image = QImage(240,240,QImage::Format_RGB888);
     for (int pos=0,i=0; i < OCAM2_PIXELS_IMAGE_NORMAL; pos+=3,i++)
     {
@@ -979,10 +981,17 @@ vector<unsigned short> MainWindow::MegaPixel4k(const vector<unsigned short> img)
         square_count[mindex]++;
     }
     g_qtimeObj->start();
-    for(int i = 0; i < 240*240; i++){
-        ret[i] = g_maths.Median(square_val[i]);
-//        qDebug() << "Time used: " << g_qtimeObj->elapsed() << "s";
-//        ret[i] = g_maths.Mean(square_val[i]);
+    if(g_megapixel4k_mean){
+        for(int i = 0; i < 240*240; i++){
+            ret[i] = g_maths.Mean(square_val[i]);
+            //        qDebug() << "Time used: " << g_qtimeObj->elapsed() << "s";
+        }
+    }
+    else if(g_megapixel4k_median){
+        for(int i = 0; i < 240*240; i++){
+            ret[i] = g_maths.Median(square_val[i]);
+            //        qDebug() << "Time used: " << g_qtimeObj->elapsed() << "s";
+        }
     }
     return ret;
 }
@@ -1034,6 +1043,14 @@ void MainWindow::test2()
         g_img4K_disp = MegaPixel4k(img_disp_fullsize);
     }
     display_4K(g_img4K_disp);
+    g_img4K_pixel_val = g_img4K;
+
+//    for(int i = 0; i < 100; i++){
+//        cout << dec << i << " " << hex << g_img4K_pixel_val[i] << endl;
+//    }
+//    for(int i = 8448*2055-100; i < 8448*2055; i++){
+//        cout << dec << i << " " << hex << g_img4K_pixel_val[i] << endl;
+//    }
 
 }
 
@@ -2044,30 +2061,18 @@ void MainWindow::on_BufferAcquire_PB_clicked()
     g_callback_mode = 0;
     g_surfacebuffercount = 0;
     g_qtimeObj->start();
+    ui->progressBar->reset();
+    ui->progressBar->setMaximum(g_buffersize-1);
     g_status = McSetParamInt(g_hChannel, MC_ChannelState, MC_ChannelState_ACTIVE);
-    while(g_surfacebuffercount < g_buffersize-1);
+    while(g_surfacebuffercount < g_buffersize-1){
+        ui->progressBar->setValue(g_surfacebuffercount+1);
+    };
     g_status = McSetParamInt(g_hChannel, MC_ChannelState, MC_ChannelState_ACTIVE);
     cout << dec << g_surfacebuffercount << endl;
     int t = g_qtimeObj->elapsed();
     cout << dec << "surface buffer count = " << g_surfacebuffercount << endl;
     qDebug() << "...Done!";
     qDebug() << "Acquired" << QString::number(g_buffersize) << "images";
-    // Check identical frames
-    //    ChangeSection();
-    //    int k = 0;
-    //    for(int i = 0; i < g_buffersize - 1; i++){
-    //        int p = 0;
-    //        for(int j = 0; j < g_sizeX*g_sizeY; j++){
-    //            if(g_surfacebuffer[i][j] != g_surfacebuffer[i+1][j]){
-    //                p = 1;
-    //            }
-    //        }
-    //        if( p == 0){
-    //            cout << dec << i << " & " << i+1 << " same" << endl;
-    //            k++;
-    //        }
-    //    }
-    //    cout << dec << k << endl;
     qDebug() << "Time used: " << t/1000.0 << "s";
 }
 
@@ -3701,6 +3706,8 @@ void MainWindow::on_Sampling_Button_toggled(bool checked)
         g_sampling4k = true;
         g_megapixel4k = false;
         ui->MegaPixel_Button->setChecked(false);
+        ui->MegaPixel_Mean_Button->setEnabled(false);
+        ui->MegaPixel_Median_Button->setEnabled(false);
     }
 }
 
@@ -3710,6 +3717,26 @@ void MainWindow::on_MegaPixel_Button_toggled(bool checked)
         g_megapixel4k = true;
         g_sampling4k = false;
         ui->Sampling_Button->setChecked(false);
+        ui->MegaPixel_Mean_Button->setEnabled(true);
+        ui->MegaPixel_Median_Button->setEnabled(true);
+    }
+}
+
+void MainWindow::on_MegaPixel_Mean_Button_toggled(bool checked)
+{
+    if(checked){
+        g_megapixel4k_mean = true;
+        g_megapixel4k_median = false;
+        ui->MegaPixel_Median_Button->setChecked(false);
+    }
+}
+
+void MainWindow::on_MegaPixel_Median_Button_toggled(bool checked)
+{
+    if(checked){
+        g_megapixel4k_median = true;
+        g_megapixel4k_mean = false;
+        ui->MegaPixel_Mean_Button->setChecked(false);
     }
 }
 
@@ -3750,3 +3777,7 @@ int get_y(int in){
 }
 
 /*================= OTHER FUNCTION END ======================================*/
+
+
+
+

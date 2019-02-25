@@ -32,6 +32,7 @@ vector<short> g_imgNormal_vector(OCAM2_PIXELS_IMAGE_NORMAL,0);
 vector<unsigned short> g_img4Kraw_vector(PIXEL_4K_RAW/2,0);
 vector<unsigned short> g_img4K_disp(OCAM2_PIXELS_IMAGE_NORMAL,0);
 vector<unsigned short> g_img4K(8448*2055,0);
+vector<unsigned short> g_img4K_pixel_val(8448*2055,0);
 
 
 // QT CLASS
@@ -82,6 +83,8 @@ bool g_pre_acqui = true;
 bool g_disp4k_show = false;
 bool g_sampling4k = true;
 bool g_megapixel4k = false;
+bool g_megapixel4k_mean = false;
+bool g_megapixel4k_median = false;
 
 // PARAMETERS
 int g_BP;

@@ -201,6 +201,12 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_MegaPixel_Mean_Button_toggled(bool checked);
+
+    void on_MegaPixel_Median_Button_clicked(bool checked);
+
+    void on_MegaPixel_Median_Button_toggled(bool checked);
+
 private:
     Ui::MainWindow *ui;
 
