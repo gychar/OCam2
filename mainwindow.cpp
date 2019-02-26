@@ -2876,7 +2876,15 @@ void MainWindow::on_PNG_PB_clicked()
         }
     }
     QTime time;
-    string filepath = "/acqui/png/4k_img" + string((const char *)time.currentTime().toString().toLocal8Bit()) + ".png";
+    QDate date;
+    string day = to_string(date.currentDate().day());
+    string month = to_string(date.currentDate().month());
+    string year = to_string(date.currentDate().year());
+    string hour = to_string(time.currentTime().hour());
+    string minute = to_string(time.currentTime().minute());
+    string second = to_string(time.currentTime().second());
+
+    string filepath = "/acqui/png/4k_img_"+year+"-"+month+"-"+day+"_"+hour+":"+minute+":"+second+".png";
     imwrite(filepath,img);
     cout << filepath << " saved." << endl;
 }
@@ -3778,6 +3786,14 @@ void MainWindow::on_MegaPixel_Median_Button_toggled(bool checked)
     }
 }
 
+void MainWindow::on_ImageJ_PB_clicked()
+{
+    QCoreApplication::processEvents();
+    QString fileName = QFileDialog::getOpenFileName(this,"Open file",g_data_path+"/png","Files (*.png)");
+    QString image_path = "imagej " + fileName;
+    system(image_path.toLocal8Bit().constData());
+}
+
 /*================= QT GUI FUNCTIONS END ======================================*/
 
 /*================= OTHER FUNCTION START ======================================*/
@@ -3815,6 +3831,7 @@ int get_y(int in){
 }
 
 /*================= OTHER FUNCTION END ======================================*/
+
 
 
 

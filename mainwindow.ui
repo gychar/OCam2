@@ -563,6 +563,19 @@
        <string>Dark</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="ImageJ_PB">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>140</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>ImageJ</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="Setup_Tab">
      <attribute name="title">

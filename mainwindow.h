@@ -212,6 +212,8 @@ private slots:
 
     void on_Intermediate_Display_PB_clicked();
 
+    void on_ImageJ_PB_clicked();
+
 private:
     Ui::MainWindow *ui;
 
