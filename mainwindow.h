@@ -44,7 +44,9 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "zoomer.h"
 #include "display4k.h"
+#include "ratiodisplay4k.h"
 #include "select_mode.h"
+#include <random>
 
 using namespace std;
 using namespace cv;
@@ -67,6 +69,7 @@ public:
     ~MainWindow();
     Zoomer *Zoomer_win;
     Display4K *Disp4K_win;
+    RatioDisplay4k *RatioDisp4K_win;
     Select_Mode *Mode_win;
     QTimer *timer;
     bool eventFilter(QObject *obj, QEvent *ev);
@@ -207,6 +210,8 @@ private slots:
 
     void on_MegaPixel_Median_Button_toggled(bool checked);
 
+    void on_Intermediate_Display_PB_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -237,6 +242,7 @@ private:
     void mousePressEvent(QMouseEvent *event);
     vector<unsigned short> Sampling4k(const vector<unsigned short> img);
     vector<unsigned short> MegaPixel4k(const vector<unsigned short> img);
+    vector<unsigned short> RatioDisplay(const vector<unsigned short> img, int ratio = 0);
     void SplitReg();
     void Supp_OverScan();
     void Combine_Reg_4K();

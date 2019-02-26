@@ -178,81 +178,6 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>390</y>
-      <width>241</width>
-      <height>104</height>
-     </rect>
-    </property>
-    <layout class="QFormLayout" name="BPWP_Layout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="BP_Label">
-       <property name="text">
-        <string>BP</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QSlider" name="BP_Slider">
-       <property name="maximum">
-        <number>16383</number>
-       </property>
-       <property name="pageStep">
-        <number>500</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="tickPosition">
-        <enum>QSlider::TicksBothSides</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLabel" name="BPvalue_Label">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="WP_Label">
-       <property name="text">
-        <string>WP</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QSlider" name="WP_Slider">
-       <property name="maximum">
-        <number>16383</number>
-       </property>
-       <property name="singleStep">
-        <number>1</number>
-       </property>
-       <property name="pageStep">
-        <number>500</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="tickPosition">
-        <enum>QSlider::TicksBothSides</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLabel" name="WPvalue_Label">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
       <y>530</y>
       <width>631</width>
       <height>105</height>
@@ -461,19 +386,6 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="Zoom_PB">
-    <property name="geometry">
-     <rect>
-      <x>910</x>
-      <y>110</y>
-      <width>171</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Zoom</string>
-    </property>
-   </widget>
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
@@ -484,7 +396,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="usesScrollButtons">
      <bool>true</bool>
@@ -503,9 +415,9 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>10</y>
+        <y>30</y>
         <width>129</width>
-        <height>266</height>
+        <height>204</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="NetSave_Layout">
@@ -540,23 +452,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="SingleSave_PB">
+        <widget class="QPushButton" name="PNG_PB">
          <property name="text">
-          <string>Single Save</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="SingleLoad_PB">
-         <property name="text">
-          <string>Single Load</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="AcquireCycle_PB">
-         <property name="text">
-          <string>Acquire Cycle</string>
+          <string>Save PNG</string>
          </property>
         </widget>
        </item>
@@ -595,149 +493,10 @@
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>260</x>
-        <y>10</y>
-        <width>251</width>
-        <height>229</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="Stats_Display_Layout">
-       <item>
-        <widget class="QLabel" name="GlobalStat_Label">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Global Statistics</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="Mean_Label">
-         <property name="text">
-          <string>Mean: </string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="Median_Label">
-         <property name="text">
-          <string>Median: </string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="Variance_Label">
-         <property name="text">
-          <string>Variance: </string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="StandardDeviation_Label">
-         <property name="text">
-          <string>Ecart-type: </string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="SNR_Label">
-         <property name="text">
-          <string>SNR:</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>150</x>
-        <y>10</y>
-        <width>101</width>
-        <height>147</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="Stats_Layout">
-       <item>
-        <widget class="QPushButton" name="Statistics_PB">
-         <property name="text">
-          <string>Statistics</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="Histo_PB">
-         <property name="text">
-          <string>Histogram</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="PNG_PB">
-         <property name="text">
-          <string>Save PNG</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>260</x>
-        <y>250</y>
-        <width>257</width>
-        <height>216</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="StatsTable_Layout">
-       <item row="0" column="0">
-        <widget class="QLabel" name="image_statistics_label">
-         <property name="text">
-          <string>          Mean             Var                  SD</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QTableWidget" name="image_table">
-         <property name="rowCount">
-          <number>8</number>
-         </property>
-         <property name="columnCount">
-          <number>3</number>
-         </property>
-         <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>80</number>
-         </attribute>
-         <attribute name="verticalHeaderDefaultSectionSize">
-          <number>21</number>
-         </attribute>
-         <row/>
-         <row/>
-         <row/>
-         <row/>
-         <row/>
-         <row/>
-         <row/>
-         <row/>
-         <column/>
-         <column/>
-         <column/>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
         <x>10</x>
-        <y>250</y>
+        <y>200</y>
         <width>131</width>
-        <height>191</height>
+        <height>211</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="Buffer_Layout">
@@ -781,8 +540,8 @@
      <widget class="QCheckBox" name="Flat_Checkbox">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>170</y>
+        <x>360</x>
+        <y>30</y>
         <width>99</width>
         <height>23</height>
        </rect>
@@ -794,8 +553,8 @@
      <widget class="QCheckBox" name="Dark_Checkbox">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>199</y>
+        <x>360</x>
+        <y>59</y>
         <width>99</width>
         <height>23</height>
        </rect>
@@ -1274,6 +1033,264 @@
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>OCam II</string>
+     </attribute>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>241</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <layout class="QFormLayout" name="BPWP_Layout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="BP_Label">
+         <property name="text">
+          <string>BP</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QSlider" name="BP_Slider">
+         <property name="maximum">
+          <number>16383</number>
+         </property>
+         <property name="pageStep">
+          <number>500</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="tickPosition">
+          <enum>QSlider::TicksBothSides</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="BPvalue_Label">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="WP_Label">
+         <property name="text">
+          <string>WP</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QSlider" name="WP_Slider">
+         <property name="maximum">
+          <number>16383</number>
+         </property>
+         <property name="singleStep">
+          <number>1</number>
+         </property>
+         <property name="pageStep">
+          <number>500</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="tickPosition">
+          <enum>QSlider::TicksBothSides</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLabel" name="WPvalue_Label">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QPushButton" name="Zoom_PB">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>20</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Zoom</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="layoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>160</y>
+        <width>101</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="Stats_Layout">
+       <item>
+        <widget class="QPushButton" name="Statistics_PB">
+         <property name="text">
+          <string>Statistics</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="Histo_PB">
+         <property name="text">
+          <string>Histogram</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget_3">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>240</y>
+        <width>251</width>
+        <height>229</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="Stats_Display_Layout">
+       <item>
+        <widget class="QLabel" name="GlobalStat_Label">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Global Statistics</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="Mean_Label">
+         <property name="text">
+          <string>Mean: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="Median_Label">
+         <property name="text">
+          <string>Median: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="Variance_Label">
+         <property name="text">
+          <string>Variance: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="StandardDeviation_Label">
+         <property name="text">
+          <string>Ecart-type: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="SNR_Label">
+         <property name="text">
+          <string>SNR:</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget_4">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>260</y>
+        <width>257</width>
+        <height>216</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="StatsTable_Layout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="image_statistics_label">
+         <property name="text">
+          <string>          Mean             Var                  SD</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QTableWidget" name="image_table">
+         <property name="rowCount">
+          <number>8</number>
+         </property>
+         <property name="columnCount">
+          <number>3</number>
+         </property>
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>80</number>
+         </attribute>
+         <attribute name="verticalHeaderDefaultSectionSize">
+          <number>21</number>
+         </attribute>
+         <row/>
+         <row/>
+         <row/>
+         <row/>
+         <row/>
+         <row/>
+         <row/>
+         <row/>
+         <column/>
+         <column/>
+         <column/>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>160</y>
+        <width>102</width>
+        <height>89</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QPushButton" name="SingleSave_PB">
+         <property name="text">
+          <string>Single Save</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="SingleLoad_PB">
+         <property name="text">
+          <string>Single Load</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="AcquireCycle_PB">
+         <property name="text">
+          <string>Acquire Cycle</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </widget>
    <widget class="QPushButton" name="Display_4K_PB">
     <property name="geometry">
@@ -1288,15 +1305,27 @@
      <string>Display 4K</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="Intermediate_Display_PB">
+    <property name="geometry">
+     <rect>
+      <x>910</x>
+      <y>200</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Intermediate Display</string>
+    </property>
+   </widget>
    <zorder>tabWidget</zorder>
    <zorder>graphicsView</zorder>
    <zorder>Exit_PB</zorder>
    <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
-   <zorder>layoutWidget</zorder>
-   <zorder>Zoom_PB</zorder>
    <zorder>Display_4K_PB</zorder>
+   <zorder>Intermediate_Display_PB</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

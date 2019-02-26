@@ -97,11 +97,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tabWidget->setCurrentIndex(0);
     g_image = new QImage();
     g_image4K = new QImage();
+    g_image_inter_4K = new QImage();
     g_zoom_image = new QImage();
     g_scene = new QGraphicsScene;
     g_scene2 = new QGraphicsScene;
     g_scene_zoom = new QGraphicsScene;
     g_scene_4k = new QGraphicsScene;
+    g_scene_inter_4k = new QGraphicsScene;
     g_qtimeObj = new QTime;
 
     Init_Driver();
@@ -943,9 +945,13 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     }
 }
 
-// For 4k display, sampling method: Display value for each 17 pixels to output a 240*240 matrix
+// For 4k display, sampling method: Display 1 random pixel for each 17 pixels to output a 240*240 matrix
 vector<unsigned short> MainWindow::Sampling4k(const vector<unsigned short> img)
 {
+    random_device rd;
+    default_random_engine e(rd());
+    uniform_int_distribution<int> uniform_dist(0, 16);
+    int random_val = 0;
     vector<unsigned short> ret;
     for(int i = 0; i < 17360640; i++){
         int x = i % 8448;
@@ -955,7 +961,8 @@ vector<unsigned short> MainWindow::Sampling4k(const vector<unsigned short> img)
         if(y > 2024)
             continue;
         if(x % 17  == 0 && y % 17 == 0){
-            ret.push_back(img[i]);
+            random_val = uniform_dist(e);
+            ret.push_back(img[i + random_val]);
         }
     }
     return ret;
@@ -996,19 +1003,31 @@ vector<unsigned short> MainWindow::MegaPixel4k(const vector<unsigned short> img)
     return ret;
 }
 
+// User input ratio reduced output matrix
+vector<unsigned short> MainWindow::RatioDisplay(const vector<unsigned short> img, int ratio)
+{
+    random_device rd;
+    default_random_engine e(rd());
+    uniform_int_distribution<int> uniform_dist(0, 4);
+    int random_val = 0;
+    vector<unsigned short> ret;
+    for(int i = 0; i < 17360640; i++){
+        int x = i % 8448;
+        int y = i / 8448;
+        if(x > 8144)
+            continue;
+        if(y > 2024)
+            continue;
+        if(x % 5  == 0 && y % 5 == 0){
+            random_val = uniform_dist(e);
+            ret.push_back(img[i + random_val]);
+        }
+    }
+    return ret;
+}
+
 void MainWindow::test2()
 {
-    // Create 16-bits MAT
-    //    Mat img(2055,8448,CV_16UC1,Scalar(0));
-    //    for (int j = 0; j < img.rows; j++){
-    //        for(int i = 0; i < img.cols; i++){
-    //            //            img.at<ushort>(j,i) = (img_fullsize[j*8448+i]) & 0xff;
-    //            img.at<ushort>(j,i) = (g_img4K[j*8448+i]) & 0xff;
-    //        }
-    //    }
-    //    string filepath = "/acqui/png/4kimgtest.png";
-    //    imwrite(filepath,img);
-    //    cout << filepath << " saved." << endl;
     if(g_disp4k_show){
         *g_image4K = QImage(8448,2055,QImage::Format_RGB888);
         for (int pos=0,i=0; i < 2055*8448; pos+=3,i++)
@@ -1044,14 +1063,28 @@ void MainWindow::test2()
     }
     display_4K(g_img4K_disp);
     g_img4K_pixel_val = g_img4K;
-
-//    for(int i = 0; i < 100; i++){
-//        cout << dec << i << " " << hex << g_img4K_pixel_val[i] << endl;
-//    }
-//    for(int i = 8448*2055-100; i < 8448*2055; i++){
-//        cout << dec << i << " " << hex << g_img4K_pixel_val[i] << endl;
-//    }
-
+    if(g_disp_ratio_4k_show){
+        vector<unsigned short> img_inter_4K(800*800,0);
+        img_inter_4K = RatioDisplay(img_disp_fullsize);
+        *g_image_inter_4K = QImage(800,800,QImage::Format_RGB888);
+        for (int pos=0,i=0; i < 800*800; pos+=3,i++)
+        {
+            unsigned char PixRed=0, PixGreen=0, PixBlue=0;
+            short RawPixel= static_cast<short>(img_inter_4K[i] & 0xff);
+            if (RawPixel >= 0xFF) //if pixel is above White point
+                PixRed= PixGreen= PixBlue= 0xFF;//8 bit value is 255
+            else if (RawPixel <= 0)//if below Black
+                PixRed= PixGreen= PixBlue = 0;//value is 0
+            else{
+                PixRed= PixGreen= PixBlue= static_cast<unsigned char>(static_cast<int>(RawPixel));
+            }
+            g_image_inter_4K->bits()[pos] = PixRed;
+            g_image_inter_4K->bits()[pos+1] = PixGreen;
+            g_image_inter_4K->bits()[pos+2] = PixBlue;
+        }
+        g_scene_inter_4k->clear();
+        g_scene_inter_4k->addPixmap(QPixmap::fromImage(*g_image_inter_4K));
+    }
 }
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
@@ -1807,6 +1840,16 @@ void MainWindow::on_Display_4K_PB_clicked()
         Disp4K_win = new Display4K;
         Disp4K_win->show();
         g_disp4k_show = true;
+    }
+}
+
+// Display intermediate 4K
+void MainWindow::on_Intermediate_Display_PB_clicked()
+{
+    if(!g_disp_ratio_4k_show){
+        RatioDisp4K_win = new RatioDisplay4k;
+        RatioDisp4K_win->show();
+        g_disp_ratio_4k_show = true;
     }
 }
 
@@ -2825,20 +2868,15 @@ void MainWindow::on_Histo_PB_clicked()
 void MainWindow::on_PNG_PB_clicked()
 {
     // Create 16-bits MAT
-    Mat img(4096,4096,CV_16UC1,Scalar(0));
+    Mat img(2055,8448,CV_16UC1,Scalar(0));
     for (int j = 0; j < img.rows; j++){
         for(int i = 0; i < img.cols; i++){
-            if(g_img_4K[j*4096+i] > 16383){
-                g_img_4K[j*4096+i] = 16383;
-            }
-            if(g_img_4K[j*4096+i] < 0){
-                g_img_4K[j*4096+i] = 0;
-            }
-            img.at<ushort>(j,i) = static_cast<unsigned short>(g_img_4K[j*4096+i]);
+            //            img.at<ushort>(j,i) = (img_fullsize[j*8448+i]) & 0xff;
+            img.at<ushort>(j,i) = (g_img4K_pixel_val[j*8448+i]) & 0xff;
         }
     }
-    //    imshow(to_string(g_num), img);
-    string filepath = "/acqui/png/" + to_string(g_num-1) + ".png";
+    QTime time;
+    string filepath = "/acqui/png/4k_img" + string((const char *)time.currentTime().toString().toLocal8Bit()) + ".png";
     imwrite(filepath,img);
     cout << filepath << " saved." << endl;
 }
@@ -3777,6 +3815,8 @@ int get_y(int in){
 }
 
 /*================= OTHER FUNCTION END ======================================*/
+
+
 
 
 

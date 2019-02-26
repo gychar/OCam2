@@ -38,11 +38,13 @@ vector<unsigned short> g_img4K_pixel_val(8448*2055,0);
 // QT CLASS
 QImage *g_image;
 QImage *g_image4K;
+QImage *g_image_inter_4K;
 QImage *g_zoom_image;
 QGraphicsScene *g_scene;
 QGraphicsScene *g_scene2;
 QGraphicsScene *g_scene_zoom;
 QGraphicsScene *g_scene_4k;
+QGraphicsScene *g_scene_inter_4k;
 QTime *g_qtimeObj;
 
 // OCAM II
@@ -81,6 +83,7 @@ bool g_select_done = false;
 bool g_4kacqui = false;
 bool g_pre_acqui = true;
 bool g_disp4k_show = false;
+bool g_disp_ratio_4k_show = false;
 bool g_sampling4k = true;
 bool g_megapixel4k = false;
 bool g_megapixel4k_mean = false;

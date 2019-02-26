@@ -102,7 +102,11 @@ void QGraphicsViewCustom::mousePressEvent(QMouseEvent *event)
         x1 = unsigned(mapToScene(event->pos()).x());
         y1 = unsigned(mapToScene(event->pos()).y());
         int index = x1 + y1 * 8448;
-        cout << dec << "press : x = " << x1 << " y = " << y1 << " value = " << hex << g_img4K_pixel_val[index] << endl;
+        QPoint pt(x1,y1);
+        g_image4K->setPixel(pt,qRgb(255,0,255));
+        g_scene_4k->clear();
+        g_scene_4k->addPixmap(QPixmap::fromImage(*g_image4K));
+        cout << dec << "pixel : x = " << x1 << " y = " << y1 << " value = " << hex << g_img4K_pixel_val[index] << endl;
     }
     g_zoom_mean_done = false;
 }
